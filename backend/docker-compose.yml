@@ -1,0 +1,12 @@
+version: '3'
+
+services:
+  mysql:
+    image: mysql:8
+    container_name: shopping_mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: shopping
+    ports:
+      - "3306:3306"
