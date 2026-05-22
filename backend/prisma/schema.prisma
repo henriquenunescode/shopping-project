@@ -4,10 +4,69 @@
 // Get a free hosted Postgres database in seconds: `npx create-db`
 
 generator client {
-  provider = "prisma-client"
   output   = "../src/generated/prisma"
+  engineType = "binary"
 }
 
 datasource db {
   provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model movies {
+  movie_id Int       @id @default(autoincrement())
+  titulo   String    @db.VarChar(20)
+  genero   String    @db.VarChar(20)
+  duracao  Int       
+
+  rentals  rentals[]
+  tickets  tickets[]
+}
+
+model users {
+  user_id   Int       @id @default(autoincrement())
+  nome      String    @db.VarChar(20)
+  email     String    @unique @db.VarChar(30)
+  senha     String    @db.VarChar(100)
+  google_id String?   @unique @db.VarChar(20)
+
+  orders   orders?
+  rentals  rentals?
+  tickets  tickets?
+}
+
+model orders {
+  orders_id  Int   @id @default(autoincrement())
+  total      Decimal @db.Decimal(6, 2)
+
+  user       users @relation(fields: [O_user_fk], references: [user_id])
+  O_user_fk  Int   @unique
+}
+
+model rentals {
+  rental_id  Int      @id @default(autoincrement())
+  data_final DateTime @db.Date
+
+  user       users  @relation(fields: [R_user_fk], references: [user_id])
+  R_user_fk  Int    @unique
+
+  movie      movies @relation(fields: [R_movie_fk], references: [movie_id])
+  R_movie_fk Int
+}
+
+model tickets {
+  tickets_id Int    @id @default(autoincrement())
+  sessao     String @db.VarChar(5)
+
+  user       users  @relation(fields: [T_user_fk], references: [user_id])
+  T_user_fk  Int    @unique
+
+  movie      movies @relation(fields: [T_movie_fk], references: [movie_id])
+  T_movie_fk Int    @unique
+}
+
+model stores {
+  store_id Int    @id @default(autoincrement())
+  nome     String @db.VarChar(20)
+  tipo     String @db.VarChar(20)
 }
