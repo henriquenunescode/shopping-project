@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lojas | Boutique Élite</title>
+    <link rel="stylesheet" href="../styles/global.css">
+    <link rel="stylesheet" href="../styles/store.css">
+    <link rel="stylesheet" href="../styles/header-nav.css">
+    <script src="../scripts/formToggle.js" defer></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+</head>
+<body>
+    <header>
+        <div class="link-header">
+            <a href="#"><i class="ti ti-arrow-left"></i> VOLTAR</a>
+        </div>
+        <div class="title-header">
+            <span>MODA</span>
+            <h1>Boutique Élite</h1>
+        </div>
+    </header>
+    <nav>
+        <a href="#"><i class="ti ti-package"></i> PRODUTOS</a>
+        <a href="#"><i class="ti ti-users-group"></i> FUNCIONÁRIOS</a>
+        <a href="#"><i class="ti ti-package"></i> ESTOQUE</a>
+    </nav>
+    <main>
+        <section class="view-products">
+            <div class="title-section">
+                <h2>Produtos</h2>
+                <button id="new-item">+ Novo Produto</button>
+            </div>
+            <div id="container"></div>
+            <div class="grid-products">
+                <div>
+                    <img src="../assets/images/flip.jpg"alt="">
+                    <div class="info-product">
+                        <h3>Produto 1</h3>
+                        <p class="price">R$199.90</p>
+                        <p class="stock">Estoque: 50</p>
+                    </div>
+                    <select name="quantity" id="quantity">
+                        <option value="">Selecione a quantidade</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    </select>
+                    <div class="buttons">
+                        <button class="add">Adicionar ao carrinho</button>
+                        <button class="icon-remove"><i class="ti ti-trash"></i></button>
+                    </div>
+                </div>
+                <div>
+                    <img src="../assets/images/maison.jpg" alt="">
+                    <div class="info-product">
+                        <h3>Produto 2</h3>
+                        <p class="price">R$299.90</p>
+                        <p class="stock">Estoque: 100</p>
+                    </div>
+                    <select name="quantity" id="quantity">
+                        <option value="">Selecione a quantidade</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    </select>
+                    <div class="buttons">
+                        <button class="add">Adicionar ao carrinho</button>
+                        <button class="icon-remove"><i class="ti ti-trash"></i></button>
+                    </div>
+                </div>
+                <div>
+                    <img src="../assets/images/gastronomia.jpg" alt="">
+                    <div class="info-product">
+                        <h3>Produto 3</h3>
+                        <p class="price">R$149.90</p>
+                        <p class="stock">Estoque: 150</p>
+                    </div>
+                    <select name="quantity" id="quantity">
+                        <option value="">Selecione a quantidade</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    </select>
+                    <div class="buttons">
+                        <button class="add">Adicionar ao carrinho</button>
+                        <button class="icon-remove"><i class="ti ti-trash"></i></button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+</body>
+</html>

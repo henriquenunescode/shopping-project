@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lem' Mar</title>
+    <link rel="stylesheet" href="../styles/global.css">
+    <link rel="stylesheet" href="../styles/restaurante.css">
+    <link rel="stylesheet" href="../styles/header-nav.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+</head>
+<body>
+    <header>
+        <div class="link-header">
+            <a href="#"><i class="ti ti-arrow-left"></i> VOLTAR</a>
+        </div>
+        <div class="title-header">
+            <span>GASTRONOMIA</span>
+            <h1>Lem' Mar</h1>
+        </div>
+    </header>
+    <nav>
+        <a href="#"><i class="ti ti-package"></i> MENU</a>
+        <a href="#"><i class="ti ti-users-group"></i> CHEFS</a>
+    </nav>
+    <main>
+        <section>
+            <h2>Menu</h2>
+            <div class="container">
+                <div class="container-form">
+                    <h3>Adicionar Prato</h3>
+                    <form>
+                        <div>
+                            <input type="text" name="name" placeholder="Nome do prato">
+                        </div>
+                        <div>
+                            <input type="number" name="price" placeholder="Preço">
+                        </div>
+                        <div>
+                            <input type="text" name="descrition" placeholder="Descrição">
+                        </div>
+                        <div>
+                            <select name="category" id="category">
+                                <option value="">Selecione a categoria</option>
+                                <option value="principal">Pratos Principais </option>
+                                <option value="sobremesa">Sobremesas</option>
+                            </select>
+                        </div>
+                        <div>
+                            <button>Adicionar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="grid-pratos">
+                <div class="pratos">
+                    <div class="prato">
+                        <div>
+                            <h3>Risoto de Camarão</h3>
+                            <span>PRATOS PRINCIPAIS</span>
+                        </div>
+                        <p class="descrition">Arroz arbóreo com camarão</p>
+                        <p class="price">R$68.00</p>
+                    </div>
+                    <div class="icon-remove"><i class="ti ti-trash"></i></div>
+                </div>
+                <div class="pratos">
+                    <div class="prato">
+                        <div>
+                            <h3>Peixe Assado</h3>
+                            <span>PRATOS PRINCIPAIS</span>
+                        </div>
+                        <p class="descrition">Assado de peixe com legumes chamuscados</p>
+                        <p class="price">R$55.00</p>
+                    </div>
+                    <div class="icon-remove"><i class="ti ti-trash"></i></div>
+                </div>
+                <div class="pratos">
+                    <div class="prato">
+                        <div>
+                            <h3>Tiramisù</h3>
+                            <span>SOBREMESAS</span>
+                        </div>
+                        <p class="descrition">Sobremesa italiana clássica</p>
+                        <p class="price">R$28.00</p>
+                    </div>
+                    <div class="icon-remove"><i class="ti ti-trash"></i></div>
+                </div>
+            </div>
+        </section>
+    </main>
+</body>
+</html>
