@@ -1,0 +1,310 @@
+@font-face {
+    font-family: 'Vogue';
+    src: url(../assets/fonts/vogue/Vogue.ttf) format(truetype);
+}
+
+@font-face {
+    font-family: 'Sparkle Passion';
+    src: url(../assets/fonts/sparkle_passion/Sparkle\ Passion.ttf) format(truetype);
+}
+
+header {
+    min-height: 80px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 40px;
+    background-color: #2c365a;
+
+    #title {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 8px;
+
+        h2 {
+            font-size: 18px;
+            color: #fff;
+            font-weight: 200;
+            font-family: 'Sparkle Passion';
+
+            span {
+                font-size: 12px;
+                font-style: italic;
+                font-family: 'Vogue';
+            }
+        }
+
+        i {
+            font-size: 30px;
+            color: #fff;
+        }
+
+    }
+
+    #links {
+        display: flex;
+        gap: 20px;
+
+        a {
+            color: #fdfcf8;
+            padding: 10px;
+            font-size: 15px;
+            font-weight: 400;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: color 0.3s;
+
+            &:hover {
+                color: #aba38f;
+            }
+        }
+    }
+}
+
+#banner {
+    min-height: calc(580px - 80px);
+    width: 100%;
+    background-image: url(../assets/images/fundo_shopping.jpg);
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 0 20px;
+
+    i {
+        font-size: 80px;
+        color: #fff;
+        margin-bottom: 20px;
+    }
+
+    h1 {
+        font-size: 75px;
+        color: #fff;
+        margin-bottom: 20px;
+        font-weight: 500;
+        font-family: 'Sparkle Passion';
+        text-shadow: 3px 3px 10px rgba(0, 0, 0, 0.5);
+
+        span {
+            font-style: italic;
+            font-family: 'Vogue';
+        }
+    }
+
+    p {
+        font-size: 18px;
+        color: #e5e5e5;
+        margin-bottom: 30px;
+    }
+}
+
+main {
+    padding: 80px 40px 0;
+
+    p {
+        font-size: 15px;
+        color: #aba38f;
+        font-weight: bold;
+        font-family: 'Vogue';
+        margin-bottom: 30px;
+    }
+
+    h2 {
+        font-size: 40px;
+        font-weight: 300;
+        margin-bottom: 20px;
+        font-family: 'Sparkle Passion';
+        color: #2c365a;
+    }
+
+    .lojas-cards {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: center;
+        gap: 7px;
+        width: 100%;
+    
+        div {
+            width: 400px;
+            height: 300px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 20px;
+            transition: transform 0.1s;
+
+            &:hover {
+                transform: scale(1.2);
+                cursor: pointer;
+            }
+
+            span {
+                font-size: 12px;
+                font-weight: bold;
+                text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
+                color: #d17b00;
+            }
+
+            h3 {
+                font-size: 20px;
+                color: #f2f1ed;
+                font-family: 'Sparkle Passion';
+                text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
+                font-weight: 400;
+            }
+        }
+
+        #img-boutique {
+            background-image: url(../assets/images/boutique.jpg);
+            background-size: cover;
+            background-position: center;
+            margin-bottom: 10px;
+        }
+
+        #img-casa {
+            background-image: url(../assets/images/maison.jpg);
+            background-size: cover;
+            background-position: center;
+            margin-bottom: 10px;
+        }
+
+        #img-moda {
+            background-image: url(../assets/images/studio_wear.jpg);
+            background-size: cover;
+            background-position: center;
+            margin-bottom: 10px;
+        }
+    }
+
+    .areas-cards {
+        padding: 40px 0;
+        margin: 40px 0;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        width: 100%;
+        border-top: 1px solid #e5e5e5;
+    
+        div {
+            width: 600px;
+            height: 300px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 20px;
+            border-radius: 5px;
+
+            &:hover {
+                cursor: pointer;
+            }
+
+            span {
+                font-size: 12px;
+                font-weight: 800;
+                text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
+                color: #d17b00;
+            }
+
+            h2 {
+                font-size: 30px;
+                color: #f2f1ed;
+                text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
+                font-weight: 400;
+            }
+        }
+
+        #img-gastronomia {
+            background-image: url(../assets/images/gastronomia.jpg);
+            background-size: cover;
+            background-position: center;
+            margin-bottom: 10px;
+        }
+
+        #img-lazer {
+            background-image: url(../assets/images/lazer.jpg);
+            background-size: cover;
+            background-position: center;
+            margin-bottom: 10px;
+        }
+    }
+}
+
+aside {
+    padding: 20px;
+    background-color: #eeed8f;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+
+    h2 {
+        margin-top: 40px;
+        font-family: 'Sparkle Passion';
+        text-align: center;
+        font-size: 30px;
+        font-weight: 300;
+        color: #2c365a;
+    }
+
+    .servicos-area {
+        padding: 20px;
+        margin: 20px 0;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+
+        div {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 7px;
+
+            span {
+                font-size: 18px;
+                color: #000;
+                font-weight: 400;
+            }
+
+            p {
+                font-size: 14px;
+                color: #5c5c5c;
+            }
+        }
+    }
+}
+
+#button {
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+    margin: 40px;
+
+    a {
+        padding: 20px 60px;
+        background-color: #2c365a;
+        color: #f2f1ed;
+        text-decoration: none;
+        font-size: 12px;
+        border-radius: 10px;
+    }
+}
+
+footer {
+    background-color: #000;
+    color: #aba38f;
+    text-align: center;
+    padding: 20px;
+
+    p {
+        font-size: 14px;
+        margin-bottom: 5px;
+    }
+}
