@@ -1,98 +1,16 @@
+@font-face {
+    font-family: 'Vogue';
+    src: url(../assets/fonts/vogue/Vogue.ttf) format(truetype);
+}
+
+@font-face {
+    font-family: 'Sparkle Passion';
+    src: url(../assets/fonts/sparkle_passion/Sparkle\ Passion.ttf) format(truetype);
+}
+
 main {
-    padding: 30px;
-
-    .title-section {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-
-        h2 {
-            font-size: 40px;
-            margin-bottom: 20px;
-            font-weight: 300;
-        }
-
-        button {
-            width: 200px;
-            padding: 10px;
-            background-color: #1e1e1e;
-            border: 1px solid #1e1e1e;
-            border-radius: 5px;
-            color: #e9e9e9;
-            font-weight: 600;
-            cursor: pointer;
-        }
-    }
-
-    .container {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        border-bottom: 2px solid #eeeeee;
-    }
-    
     .view-products {
         padding-right: 30px;
-
-        .container-form {
-            border-left: 4px solid darkgoldenrod;
-            background-color: #1e1e1e;
-            width: 100%;
-            max-width: 400px;
-            padding: 40px;
-            border-radius: 10px;
-            margin-bottom: 40px;
-
-            h3 {
-                font-size: 30px;
-                margin-bottom: 20px;
-                font-weight: 300;
-                color: #e5e5e5;
-            }
-
-            form {
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                gap: 20px;
-
-                div {
-                    width: inherit;
-
-                    input {
-                        width: 100%;
-                        height: 35px;
-                        background-color: #e9e9e9;
-                        color: #223;
-                        padding: 10px;
-                        border-radius: 10px;
-                        border: none;
-
-                        &:focus {
-                            outline: 1px solid #5c5c5c;
-                        }
-                    }
-                }
-
-                button {
-                    width: 100%;
-                    border-radius: 10px;
-                    padding: 10px;
-                    background-color: darkgoldenrod;
-                    color: #fff;
-                    border: none;
-                    cursor: pointer;
-                    font-weight: 600;
-                    transition: all 0.3s;
-
-                    &:hover {
-                        background-color: #fff;
-                        color: #1e1e1e
-                    }
-                }
-
-            }
-        }
 
         .grid-products {
             margin-top: 40px;
@@ -103,14 +21,17 @@ main {
             gap: 20px;
             border-radius: 10px;
 
-            div {
+            .product {
                 width: 100%;
                 max-width: 300px;
                 display: flex;
                 flex-direction: column;
                 cursor: pointer;
-                background-color: #eeeeee;
+                background-color: #fff;
                 border-radius: 10px;
+                box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+                border-bottom: 4px solid #2c365a;
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 
                 img {
                     width: 100%;
@@ -122,6 +43,8 @@ main {
                 }
 
                 .info-product {
+                    display: flex;
+                    flex-direction: column;
                     padding: 10px 20px;
                     display: flex;
                     gap: 8px;
@@ -134,10 +57,11 @@ main {
                     .price {
                         font-weight: 400;
                         font-size: 20px;
+                        text-decoration: underline;
                     }
 
                     .stock {
-                        color: #5c5c5c;
+                        color: #aba38f;
                         font-weight: 600;
                     }
                 }
@@ -145,11 +69,11 @@ main {
                 select {
                     width: 200px;
                     height: 35px;
-                    margin-left: 20px;
+                    margin: 10px 0 0 20px;
                     padding: 5px;
                     border-radius: 5px;
-                    background-color: #1e1e1e;
-                    color: #fff;
+                    background-color: #fff;
+                    color: #000;
                     cursor: pointer;
                 }
 
@@ -157,16 +81,16 @@ main {
                     display: flex;
                     flex-direction: row;
                     justify-content: space-around;
-                    margin: 15px 0;
+                    margin: 10px 0;
                     padding: 10px;
 
                     .add {
                         width: 200px;
                         padding: 10px;
                         border-radius: 10px;
-                        border: 1px solid #000;
-                        background-color: #000;
-                        color: #e5e5e5;
+                        border: 1px solid #05102d;
+                        background-color: #05102d;
+                        color: #fff;
                         font-weight: 600;
                         cursor: pointer;
                         transition: all 0.3s;

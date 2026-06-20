@@ -1,25 +1,6 @@
 main {
-    padding: 30px;
-
-    h2 {
-        font-size: 40px;
-        margin-bottom: 20px;
-        font-weight: 300;
-    }
-
     section {
         width: 100%;
-
-        form {
-            select {
-                width: 100%;
-                background-color: #e9e9e9;
-                height: 35px;
-                border-radius: 10px;
-                border: none;
-                padding: 10px;
-            }
-        }
 
         .grid-pratos {
             padding: 30px 0;
@@ -33,40 +14,46 @@ main {
                 width: 100%;
                 border: 1px solid #1e1e1e;
                 padding: 20px;
-                background-color: #eeeeee;
+                background-color: #fff;
+                border: none;
+                border-bottom: 4px solid #05102d;
                 display: flex;
                 align-items: center;
                 justify-content: space-between;
 
-                .prato {
+                .info-prato {
                     display: flex;
                     flex-direction: column;
                     gap: 10px;
-                    div {
-                        display: flex;
-                        align-items: center;
-                        gap: 20px;
 
-                        h3 {
-                            font-size: 18px;
-                            font-weight: 500;
-                        }
-
-                        span {
-                            font-weight: 600;
-                            color: darkgoldenrod;
-                            font-size: 15px;
-                        }
-                    }
-
+                    
                     p.descrition {
                         color: #5c5c5c;
                     }
-
+                    
                     p.price {
                         font-size: 18px;
                         font-weight: 600;
                     }
+                }
+                
+                .name-category {
+                    display: flex;
+                    align-items: center;
+                    gap: 20px;
+
+                }
+
+                .name-category h3 {
+                    font-size: 18px;
+                    font-weight: 600;
+                    color: #d17b00;
+                }
+
+                .name-category span {
+                    font-weight: 600;
+                    color: #05102d;
+                    font-size: 15px;
                 }
 
                 .icon-remove {

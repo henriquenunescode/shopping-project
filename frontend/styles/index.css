@@ -1,11 +1,20 @@
+@font-face {
+    font-family: 'Vogue';
+    src: url(../assets/fonts/vogue/Vogue.ttf) format(truetype);
+}
+
+@font-face {
+    font-family: 'Sparkle Passion';
+    src: url(../assets/fonts/sparkle_passion/Sparkle\ Passion.ttf) format(truetype);
+}
+
 header {
     min-height: 80px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 0 40px;
-    background-color: #1e1e1e;
-    border-left: 20px solid darkgoldenrod;
+    background-color: #2c365a;
 
     #title {
         display: flex;
@@ -14,14 +23,15 @@ header {
         gap: 8px;
 
         h2 {
-            font-size: 17px;
+            font-size: 18px;
             color: #fff;
             font-weight: 200;
+            font-family: 'Sparkle Passion';
 
             span {
                 font-size: 12px;
                 font-style: italic;
-                color: #5c5c5c;
+                font-family: 'Vogue';
             }
         }
 
@@ -37,14 +47,16 @@ header {
         gap: 20px;
 
         a {
-            color: #fff;
-            font-size: 18px;
+            color: #fdfcf8;
+            padding: 10px;
+            font-size: 15px;
             font-weight: 400;
             text-decoration: none;
+            border-radius: 5px;
             transition: color 0.3s;
 
             &:hover {
-                color: #5c5c5c;
+                color: #aba38f;
             }
         }
     }
@@ -74,6 +86,13 @@ header {
         color: #fff;
         margin-bottom: 20px;
         font-weight: 500;
+        font-family: 'Sparkle Passion';
+        text-shadow: 3px 3px 10px rgba(0, 0, 0, 0.5);
+
+        span {
+            font-style: italic;
+            font-family: 'Vogue';
+        }
     }
 
     p {
@@ -88,7 +107,9 @@ main {
 
     p {
         font-size: 15px;
-        color: #b0b0b0;
+        color: #aba38f;
+        font-weight: bold;
+        font-family: 'Vogue';
         margin-bottom: 30px;
     }
 
@@ -96,6 +117,8 @@ main {
         font-size: 40px;
         font-weight: 300;
         margin-bottom: 20px;
+        font-family: 'Sparkle Passion';
+        color: #2c365a;
     }
 
     .lojas-cards {
@@ -123,14 +146,15 @@ main {
 
             span {
                 font-size: 12px;
-                font-weight: 800;
+                font-weight: bold;
                 text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
-                color: darkgoldenrod
+                color: #d17b00;
             }
 
             h3 {
                 font-size: 20px;
-                color: #e5e5e5;
+                color: #f2f1ed;
+                font-family: 'Sparkle Passion';
                 text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
                 font-weight: 400;
             }
@@ -187,12 +211,12 @@ main {
                 font-size: 12px;
                 font-weight: 800;
                 text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
-                color: darkgoldenrod
+                color: #d17b00;
             }
 
             h2 {
                 font-size: 30px;
-                color: #e5e5e5;
+                color: #f2f1ed;
                 text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
                 font-weight: 400;
             }
@@ -216,16 +240,18 @@ main {
 
 aside {
     padding: 20px;
-    background-color: #f0f0f0;
+    background-color: #eeed8f;
     width: 100%;
     max-width: 1200px;
     margin: 0 auto;
 
     h2 {
         margin-top: 40px;
+        font-family: 'Sparkle Passion';
         text-align: center;
         font-size: 30px;
         font-weight: 300;
+        color: #2c365a;
     }
 
     .servicos-area {
@@ -263,17 +289,17 @@ aside {
 
     a {
         padding: 20px 60px;
-        background-color: #1e1e1e;
-        color: #e5e5e5;
+        background-color: #2c365a;
+        color: #f2f1ed;
         text-decoration: none;
         font-size: 12px;
-        border-radius: 20px;
+        border-radius: 10px;
     }
 }
 
 footer {
-    background-color: #1e1e1e;
-    color: #5c5c5c;
+    background-color: #000;
+    color: #aba38f;
     text-align: center;
     padding: 20px;
 

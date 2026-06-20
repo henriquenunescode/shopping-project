@@ -1,69 +1,138 @@
-const buttonToggle = document.querySelector("#new-item");
+const buttonStore = document.querySelector("#new-product");
 
+const buttonRestaurant = document.querySelector("#new-dish");
 
-buttonToggle.addEventListener("click", () => {
+if (buttonStore) {
+    buttonStore.addEventListener("click", () => {
     const divContainer = document.querySelector("#container");
 
     divContainer.replaceChildren();
 
-    createForm();
-});
+    divContainer.append(createFormStore());
+    }); 
+}
 
-function createForm() {
+if (buttonRestaurant) {
+    buttonRestaurant.addEventListener("click", () => {
+    const divContainer = document.querySelector("#container");
+
+    divContainer.replaceChildren();
+
+    divContainer.append(createFormRestaurant());
+    });
+}
+
+function createFormStore() {
     const divContainer = document.querySelector("#container");
 
     divContainer.classList.add("container");
 
-    const divContainerForm = document.createElement("div");
-    divContainerForm.classList.add("container-form");
+    const containerForm = divContainerForm();
 
-    const h3 = document.createElement("h3");
-    h3.textContent = "Adicionar Produto";
+    const h3 = createH3("Adicionar Produto");
 
     const form = document.createElement("form");
 
-    const divName = document.createElement("div");
+    const fieldName = createInput("text", "name", "Nome do produto");
 
-    const inputName = document.createElement("input");
-    inputName.type = "text";
-    inputName.name = "name";
-    inputName.placeholder = "Nome do produto";
-    divName.append(inputName);
+    const fieldReference = createInput("text", "reference", "Código");
 
-    const divReference = document.createElement("div");
+    const fieldPrice = createInput("number", "price", "Preço");
 
-    const inputReference = document.createElement("input");
-    inputReference.type = "text";
-    inputReference.name = "reference";
-    inputReference.placeholder = "Código";
-    divReference.append(inputReference);
+    const fieldStock = createInput("number", "stock", "Estoque");
 
-    const divPrice = document.createElement("div");
+    const button = createButton("ADICIONAR");
 
-    const inputPrice = document.createElement("input");
-    inputPrice.type = "number";
-    inputPrice.name = "price";
-    inputPrice.placeholder = "Preço";
-    divPrice.append(inputPrice);
+    form.append(fieldName, fieldReference, fieldPrice, fieldStock, button);
 
-    const divStock = document.createElement("div");
+    containerForm.append(h3, form);
 
-    const inputStock = document.createElement("input");
-    inputStock.type = "number";
-    inputStock.name = "stock";
-    inputStock.placeholder = "Estoque";
-    divStock.append(inputStock);
+    return containerForm;
+}
 
-    const divButton = document.createElement("div");
+export function createFormRestaurant() {
+    const divContainer = document.querySelector("#container");
 
+    divContainer.classList.add("container");
+
+    const containerForm = divContainerForm();
+
+    const h3 = createH3("Adicionar Prato");
+
+    const form = document.createElement("form");
+
+    const fieldName = createInput("text", "name", "Nome do prato");
+
+    const fieldPrice = createInput("number", "price", "Preço");
+
+    const fieldDescrition = createInput("text", "descrition", "Descrição");
+
+    const fieldSelect = createSelect("category", "category", ["Selecionar a categoria", "Pratos Principais", "Sobremesas"]);
+
+    const button = createButton("ADICIONAR");
+
+    form.append(fieldName, fieldPrice, fieldDescrition, fieldSelect, button);
+
+    containerForm.append(h3, form);
+
+    return containerForm;
+}
+
+function createInput(type, name, placeholder) {
+    const div = document.createElement("div");
+
+    const input = document.createElement("input");
+    input.type = type;
+    input.name = name;
+    input.placeholder = placeholder;
+
+    div.append(input);
+
+    return div;
+}
+
+function createH3(text) {
+    const h3 = document.createElement("h3");
+
+    h3.textContent = text;
+
+    return h3;
+}
+
+function createSelect(name, id, options) {
+    const div = document.createElement("div");
+
+    const select = document.createElement("select");
+    select.name = name;
+    select.id = id;
+
+    options.forEach((optionText) => {
+        const option = document.createElement("option");
+        option.value = optionText;
+        option.textContent = optionText;
+
+        select.append(option);
+    });
+
+    div.append(select);
+
+    return div;
+}
+
+function createButton(text) {
     const button = document.createElement("button");
-    button.textContent = "Cadastrar";
+    
     button.type = "submit";
-    divButton.append(button);
 
-    form.append(divName, divReference, divPrice, divStock, divButton);
+    button.textContent = text;
 
-    divContainerForm.append(h3, form);
+    return button;
+}
 
-    divContainer.append(divContainerForm);
+function divContainerForm() {
+    const div = document.createElement("div");
+
+    div.classList.add("container-form");
+
+    return div;
 }

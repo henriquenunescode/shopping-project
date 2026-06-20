@@ -1,6 +1,16 @@
+@font-face {
+    font-family: 'Vogue';
+    src: url(../assets/font/vogue/Vogue.ttf) format(truetype);
+}
+
+@font-face {
+    font-family: 'Sparkle Passion';
+    src: url(../assets/font/sparkle_passion/Sparkle\ Passion.ttf) format(truetype);
+}
+
 body {
     min-height: 100vh;
-    background-color: #1e1e1e;
+    background-color: #eee8df;
 }
 
 main {
@@ -17,12 +27,14 @@ section {
     max-width: 500px;
     padding: 40px;
     border-radius: 20px;
-    border-left: 20px solid darkgoldenrod;
-
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    
     h1 {
-        font-size: 35px;
+        font-size: 40px;
         margin-bottom: 10px;
         font-weight: 300;
+        color: #2c365c;
+        font-family: 'Vogue';
     }
 
     p {
@@ -56,9 +68,10 @@ section {
             padding: 12px;
             border-radius: 10px;
             border: none;
-            background-color: #1e1e1e;
+            background-color: #2c365c;
+            font-family: "Playfair Display";
             color: #e5e5e5;
-            font-size: 16px;
+            font-size: 14px;
             font-weight: bold;
             cursor: pointer;
             margin-bottom: 20px;
@@ -76,8 +89,8 @@ section {
 
         a {
             text-decoration: none;
-            color: #1e1e1e;
-            font-weight: 500;
+            color: #2c365c;
+            font-weight: 700;
         }
     }
 }
