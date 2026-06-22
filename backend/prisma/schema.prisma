@@ -14,10 +14,10 @@ datasource db {
 // -------------------------------------------
 model users {
   user_id   Int     @id @default(autoincrement())
-  nome      String  @db.VarChar(30)
-  email     String  @unique @db.VarChar(30)
-  senha     String  @db.VarChar(100)
-  google_id String? @unique @db.VarChar(100)
+  nome      String  @db.VarChar(50)
+  email     String  @unique @db.VarChar(70)
+  senha     String  @db.VarChar(200)
+  google_id String? @unique @db.VarChar(200)
 
   // Relações
   orders  orders[]
@@ -65,7 +65,7 @@ model products {
   product_id Int     @id @default(autoincrement())
   store_fk   Int
   nome       String  @db.VarChar(50)
-  preco      Decimal @db.Decimal(6, 2)
+  preco      Decimal @db.Decimal(10, 2)
   estoque    Int
 
   // Relações
@@ -96,7 +96,7 @@ model workers {
 model orders {
   orders_id Int     @id @default(autoincrement())
   user_fk   Int
-  total     Decimal @db.Decimal(6, 2)
+  total     Decimal @db.Decimal(10, 2)
 
  
   user users @relation(fields: [user_fk], references: [user_id])
@@ -112,7 +112,7 @@ model order_items {
   order_fk       Int
   product_fk     Int
   quantidade     Int
-  preco_unitario Decimal @db.Decimal(6, 2)  // preço no momento da compra, para a eventual mudança
+  preco_unitario Decimal @db.Decimal(10, 2)  // preço no momento da compra, para a eventual mudança
 
   order   orders   @relation(fields: [order_fk],   references: [orders_id])
   product products @relation(fields: [product_fk], references: [product_id])
