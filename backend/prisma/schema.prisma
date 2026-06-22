@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Get a free hosted Postgres database in seconds: `npx create-db`
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
   output   = "../src/generated/prisma"
@@ -15,60 +9,144 @@ datasource db {
   provider = "mysql"
 }
 
-model movies {
-  movie_id Int       @id @default(autoincrement())
-  titulo   String    @db.VarChar(20)
-  genero   String    @db.VarChar(20)
-  duracao  Int       
-
-  rentals  rentals[]
-  tickets  tickets[]
-}
-
+// -------------------------------------------
+// Usuários do sistema
+// -------------------------------------------
 model users {
-  user_id   Int       @id @default(autoincrement())
-  nome      String    @db.VarChar(20)
-  email     String    @unique @db.VarChar(30)
-  senha     String    @db.VarChar(100)
-  google_id String?   @unique @db.VarChar(20)
+  user_id   Int     @id @default(autoincrement())
+  nome      String  @db.VarChar(30)
+  email     String  @unique @db.VarChar(30)
+  senha     String  @db.VarChar(100)
+  google_id String? @unique @db.VarChar(100)
 
-  orders   orders?
-  rentals  rentals?
-  tickets  tickets?
+  // Relações
+  orders  orders[]
+  tickets tickets[]
+  rentals rentals[]
+
+  @@map("users")
 }
 
-model orders {
-  orders_id  Int   @id @default(autoincrement())
-  total      Decimal @db.Decimal(6, 2)
+// -------------------------------------------
+// Filmes disponíveis
+// -------------------------------------------
+model movies {
+  movies_id Int      @id @default(autoincrement())
+  titulo    String   @db.VarChar(40)
+  genero    String   @db.VarChar(30)
+  duracao   Int
 
-  user       users @relation(fields: [O_user_fk], references: [user_id])
-  O_user_fk  Int   @unique
+  // Relações
+  tickets tickets[]
+  rentals rentals[]
+
+  @@map("movies")
 }
 
-model rentals {
-  rental_id  Int      @id @default(autoincrement())
-  data_final DateTime @db.Date
-
-  user       users  @relation(fields: [R_user_fk], references: [user_id])
-  R_user_fk  Int    @unique
-
-  movie      movies @relation(fields: [R_movie_fk], references: [movie_id])
-  R_movie_fk Int
-}
-
-model tickets {
-  tickets_id Int    @id @default(autoincrement())
-  sessao     String @db.VarChar(5)
-
-  user       users  @relation(fields: [T_user_fk], references: [user_id])
-  T_user_fk  Int    @unique
-
-  movie      movies @relation(fields: [T_movie_fk], references: [movie_id])
-  T_movie_fk Int    @unique
-}
-
+// -------------------------------------------
+// Lojas
+// -------------------------------------------
 model stores {
   store_id Int    @id @default(autoincrement())
-  nome     String @db.VarChar(20)
-  tipo     String @db.VarChar(20)
+  nome     String @db.VarChar(40)
+  tipo     String @db.VarChar(40)
+
+  // Relações
+  products products[]
+  workers  workers[]
+
+  @@map("stores")
+}
+
+// -------------------------------------------
+// Produtos vinculados a lojas
+// -------------------------------------------
+model products {
+  product_id Int     @id @default(autoincrement())
+  store_fk   Int
+  nome       String  @db.VarChar(50)
+  preco      Decimal @db.Decimal(6, 2)
+  estoque    Int
+
+  // Relações
+  store stores @relation(fields: [store_fk], references: [store_id])
+  items order_items[]
+  
+  @@map("products")
+}
+
+// -------------------------------------------
+// Funcionários vinculados a lojas
+// -------------------------------------------
+model workers {
+  worker_id Int    @id @default(autoincrement())
+  nome      String @db.VarChar(50)
+  tipo      String @db.VarChar(50)
+  store_fk  Int
+
+  // Relações
+  store stores @relation(fields: [store_fk], references: [store_id])
+
+  @@map("workers")
+}
+
+// -------------------------------------------
+// Pedidos de usuários
+// -------------------------------------------
+model orders {
+  orders_id Int     @id @default(autoincrement())
+  user_fk   Int
+  total     Decimal @db.Decimal(6, 2)
+
+ 
+  user users @relation(fields: [user_fk], references: [user_id])
+
+  @@map("orders")
+}
+
+// -------------------------------------------
+// Itens de cada pedido - Entidade Para Auxiliacao(N:N)
+// -------------------------------------------
+model order_items {
+  item_id        Int     @id @default(autoincrement())
+  order_fk       Int
+  product_fk     Int
+  quantidade     Int
+  preco_unitario Decimal @db.Decimal(6, 2)  // preço no momento da compra, para a eventual mudança
+
+  order   orders   @relation(fields: [order_fk],   references: [orders_id])
+  product products @relation(fields: [product_fk], references: [product_id])
+
+  @@map("order_items")
+}
+
+
+// -------------------------------------------
+// Ingressos de sessões de cinema
+// -------------------------------------------
+model tickets {
+  tickets_id Int    @id @default(autoincrement())
+  user_fk    Int
+  movie_fk   Int
+  sessao     String @db.VarChar(5)
+
+  user  users?  @relation(fields: [user_fk], references: [user_id])
+  movie movies? @relation(fields: [movie_fk], references: [movies_id])
+
+  @@map("tickets")
+}
+
+// -------------------------------------------
+// Aluguéis de filmes
+// -------------------------------------------
+model rentals {
+  rental_id  Int      @id @default(autoincrement())
+  user_fk     Int
+  movie_fk    Int
+  data_final DateTime @db.Date
+
+  user  users  @relation(fields: [user_fk], references: [user_id])
+  movie movies @relation(fields: [movie_fk], references: [movies_id])
+
+  @@map("rentals")
 }
