@@ -35,10 +35,40 @@ async function remove(id) {
   })
 }
 
+async function findHistory(id) {
+  return prisma.users.findUnique({
+    where: {
+      user_id: Number(id)
+    },
+    include: {
+      orders: {
+        include: {
+          items: {
+            include: {
+              product: true
+            }
+          }
+        }
+      },
+      tickets: {
+        include: {
+          movie: true
+        }
+      },
+      rentals: {
+        include: {
+          movie: true
+        }
+      }
+    }
+  })
+}
+
 module.exports = {
   create,
   findAll,
   findById,
   update,
-  remove
+  remove,
+  findHistory
 }
