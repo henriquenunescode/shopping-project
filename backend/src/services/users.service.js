@@ -40,7 +40,11 @@ async function findHistory(id) {
     where: {
       user_id: Number(id)
     },
-    include: {
+    select: {
+      user_id: true,
+      nome: true,
+      email: true,
+      google_id: true,
       orders: {
         include: {
           items: {

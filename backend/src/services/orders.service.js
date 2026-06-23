@@ -85,7 +85,14 @@ async function create(data) {
         orders_id: order.orders_id
       },
       include: {
-        user: true,
+        user: {
+          select: {
+            user_id: true,
+            nome: true,
+            email: true,
+            google_id: true
+          }
+        },
         items: {
           include: {
             product: true
@@ -99,7 +106,14 @@ async function create(data) {
 async function findAll() {
   return prisma.orders.findMany({
     include: {
-      user: true,
+      user: {
+        select: {
+          user_id: true,
+          nome: true,
+          email: true,
+          google_id: true
+        }
+      },
       items: {
         include: {
           product: true
@@ -115,7 +129,14 @@ async function findById(id) {
       orders_id: Number(id)
     },
     include: {
-      user: true,
+      user: {
+        select: {
+          user_id: true,
+          nome: true,
+          email: true,
+          google_id: true
+        }
+      },
       items: {
         include: {
           product: true

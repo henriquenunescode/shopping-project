@@ -13,7 +13,7 @@ function authMiddleware(req, res, next) {
 
   if (parts.length !== 2) {
     return res.status(401).json({
-      message: "Token inválido"
+      message: "Token mal formatado"
     })
   }
 
@@ -27,12 +27,13 @@ function authMiddleware(req, res, next) {
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET)
+
     req.user = decoded
 
     next()
   } catch (err) {
     return res.status(401).json({
-      message: "Token inválido ou expirado"
+      message: "Token inválido"
     })
   }
 }
