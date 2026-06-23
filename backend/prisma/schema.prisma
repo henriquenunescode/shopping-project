@@ -99,8 +99,8 @@ model orders {
   user_fk   Int
   total     Decimal @db.Decimal(10, 2)
 
- 
   user users @relation(fields: [user_fk], references: [user_id])
+  items order_items[]
 
   @@map("orders")
 }

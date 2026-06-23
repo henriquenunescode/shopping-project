@@ -28,7 +28,7 @@ async function update(id, data) {
 async function remove(id) {
   return prisma.movies.delete({
     where: {
-      movie_id: Number(id)
+      movies_id: Number(id)
     }
   })
 }

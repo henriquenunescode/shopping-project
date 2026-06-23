@@ -53,10 +53,23 @@ async function remove(req, res, next) {
   }
 }
 
+async function findHistory(req, res, next) {
+  try {
+    const history = await usersService.findHistory(
+      req.params.id
+    )
+
+    res.json(history)
+  } catch (err) {
+    next(err)
+  }
+}
+
 module.exports = {
   create,
   findAll,
   findById,
   update,
-  remove
+  remove,
+  findHistory
 }
