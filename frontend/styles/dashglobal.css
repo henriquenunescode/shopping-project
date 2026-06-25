@@ -304,6 +304,7 @@ main {
     justify-content: center;
     margin-bottom: 40px;
     border-bottom: 2px solid #eeeeee;
+    cursor: pointer;
 
     div {
         width: 600px;
@@ -319,7 +320,6 @@ main {
         flex-direction: column;
         justify-content: flex-end;
         padding: 20px;
-        cursor: pointer;
 
         span {
             font-size: 12px;

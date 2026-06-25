@@ -1,0 +1,150 @@
+.grid-filmes {
+    padding: 30px 0;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 30px;
+
+    .filmes {
+        width: 300px;
+        display: flex;
+        flex-direction: column;
+        background-color: #fff;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+        transition: tranform 0.1s;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        border-bottom-left-radius: 10px;
+        
+        &:hover {
+            transform: scale(1.1);
+            cursor: pointer;
+        }
+        
+        .info {
+            padding: 20px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            border-left: 4px solid #05102d;
+            border-bottom-left-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 25px;
+            
+            h3 {
+                font-size: 18px;
+                font-weight: bold;
+                color: #000;
+            }
+
+            span {
+                background-color: #d17000;
+                padding: 5px;
+                color: #fff;
+            }
+
+            .session {
+                display: flex;
+                flex-direction: row;
+                gap: 10px;
+                align-items: center;
+                justify-content: center;
+
+                p {
+                    background-color: #eeed8f;
+                    padding: 5px;
+                    color: #000;
+                }
+            }
+        }
+
+    }
+
+    #banner {
+        background-image: url(../assets/images/tech.jpg);
+        background-position: center;
+        background-size: cover;
+        height: 300px;
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
+        justify-content: flex-end;
+        padding: 10px;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+
+        i {
+            padding: 10px;
+            color: #fff;
+            background-color: #ff5a5f;
+            border-radius: 10px;
+            transition: all 0.3s;
+
+            &:hover {
+                background-color: #fff;
+                color: #000;
+            }
+        }
+    }
+}
+
+.grid-tickets {
+    padding: 30px 0;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+
+    .tickets {
+        width: 100%;
+        background-color: #fff;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+        padding: 20px;
+
+        .info {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+
+            h3 {
+                color: #05102d;
+                font-size: 20px;
+                font-weight: 400;
+            }
+
+            p {
+                font-size: 15px;
+                color: #d17000;
+                font-weight: bold;
+            }
+
+            span {
+                font-weight: 600;
+                text-decoration: underline;
+                margin-bottom: 10px;
+            }
+        }
+
+        .add-button {
+            width: 200px;
+
+            button {
+                width: 100%;
+                padding: 5px;
+                border: none;
+                background-color: #05102d;
+                color: #fff;
+                font-weight: 600;
+                transition: all 0.3s;
+
+                &:hover {
+                    background-color: #eee8df;
+                    color: #000;
+                }
+            }
+        }
+    }
+}

@@ -8,6 +8,12 @@
     src: url(../assets/fonts/sparkle_passion/Sparkle\ Passion.ttf) format(truetype);
 }
 
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
 header {
     min-height: 200px;
     display: flex;
@@ -18,15 +24,29 @@ header {
     background-size: cover;
     background-position: center;
 
-    .link-header {
+    .link-button {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+
         a {
-            border-radius: 10px;
             text-decoration: none;
             color: #2c365c;
             background-color: #eee8df;
-            padding: 5px 10px;
+            padding: 10px;
             font-size: 15px;
             font-weight: 300;
+        }
+
+        button {
+            padding: 10px;
+            color: #2c365c;
+            background-color: #eee8df;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: "Sparkle Passion";
         }
     }
 
@@ -149,6 +169,7 @@ nav {
 main {
     padding: 30px;
     background-color: #eee8df;
+    flex: 1;
 
     .title-section {
         display: flex;
@@ -176,3 +197,17 @@ main {
         }
     }
 }
+
+ .icon-remove {
+            background-color: #ff5a5f;
+            padding: 10px;
+            border-radius: 10px;
+            color: #fff;
+            transition: all 0.3s;
+            cursor: pointer;
+
+            &:hover {
+                background-color: transparent;
+                color: #1e1e1e;
+            }
+        }
