@@ -1,5 +1,14 @@
 const clickAlimentacao = document.querySelector("#alimentacao");
 
+let stores = JSON.parse(localStorage.getItem("Stores"));
+
+if(!stores){
+ stores = [{
+    
+ }]
+}
+
+
 clickAlimentacao.addEventListener("click", () => {
     window.location.href = "../pages/restaurante.html";
 });

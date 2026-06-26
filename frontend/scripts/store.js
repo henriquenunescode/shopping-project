@@ -1,15 +1,29 @@
 import {createFormProducts, createFormFuncionario} from "./formToggle.js";
 
-const products = [
+let storeID = ""
+let productsID = ""
+let funcionariosID = ""
+
+let storeData = JSON.parse(localStorage.get(storeID))
+let products = JSON.parse(localStorage.get(productsID))
+let funcionarios = JSON.parse(localStorage.get(funcionariosID))
+
+if(!storeData || !products || !funcionarios){
+products = [
     {name: "Relógio", price: 199.90, reference: "abc123", stock: 50, type: "kids"},
     {name: "Moletom Preto", price: 299.90, reference: "def456", stock: 100, type: "kids"},
     {name: "Tênis Nike", price: 149.90, reference: "ghi789", stock: 150, type: "kids"}
 ];
-
-const funcionarios = [
+funcionarios = [
     {name: "João da Silva", cargo: "Gerente", email: "joao@gmail.com"},
     {name: "Maria Meirelles", cargo: "Vendedor(a)", email: "maria@gmail.com"}
 ];
+
+
+localStorage.setItem(productsID, JSON.stringify(products));
+localStorage.setItem(funcionariosID, JSON.stringfy(funcionarios));
+}
+
 
 const linkProducts = document.querySelector("#products");
 
@@ -166,6 +180,7 @@ function submitFormFuncionario() {
         };
 
         funcionarios.push(funcionario);
+        localStorage.setItem(funcionariosID, JSON.stringfy(funcionarios));
 
         renderFuncionarios();
 
@@ -203,7 +218,8 @@ function submitFormProduct() {
         };
 
         products.push(product);
-
+        localStorage.setItem(productsID, JSON.stringify(products));
+        
         renderProducts();
 
         formProduct.reset();
@@ -234,7 +250,7 @@ function divFuncionarios() {
         divRemove.append(i);
         divRemove.addEventListener("click", () => {
             funcionarios.splice(index, 1);
-
+            localStorage.setItem(funcionariosID, JSON.stringfy(funcionarios));
             renderFuncionarios();
         });
 
@@ -283,6 +299,7 @@ function divProducts() {
         buttonRemove.append(i);
         buttonRemove.addEventListener("click", () => {
             products.splice(index, 1);
+            localStorage.setItem(productsID, JSON.stringify(products));
             renderProducts();
         });
         divButtons.append(buttonAdd, buttonRemove);
@@ -359,6 +376,7 @@ function newFuncionario(funcionario, index) {
     divRemove.append(i);
     divRemove.addEventListener("click", () => {
         funcionarios.splice(index, 1);
+        localStorage.setItem(funcionariosID, JSON.stringfy(funcionarios));
 
         renderFuncionarios();
     });
@@ -401,6 +419,7 @@ function newProduct(product, index) {
     buttonRemove.append(i);
     buttonRemove.addEventListener("click", () => {
         products.splice(index, 1);
+        localStorage.setItem(productsID, JSON.stringify(products));
         renderProducts();
     });
     divButtons.append(buttonAdd, buttonRemove);
