@@ -1,11 +1,16 @@
 import {createFormCine} from "../scripts/formToggle.js";
 
-const movies = [
+let movies = JSON.parse(localStorage.getItem("Movies"));
+let tickets = JSON.parse(localStorage.getItem("Tickets"));
+
+
+if(!movies || !tickets){
+movies = [
     {name: "Invocação do Mal", duration: "1h52min", category: "kids"},
     {name: "Gente Grande", duration: "1h42min", category: "kids"}
 ];
 
-const tickets = [
+tickets = [
     {name: "Ingresso Inteiro", type: "Ingresso", price: 35.00},
     {name: "Ingresso Meia", type: "Ingresso", price: 17.50},
     {name: "Refrigerante 500ml", type: "Bebida", price: 10.00},
@@ -13,6 +18,11 @@ const tickets = [
     {name: "Pipoca Média", type: "Alimento", price: 20.00},
     {name: "Pipoca Pequena", type: "Alimento", price: 15.00}
 ];
+ //preset caso null
+
+localStorage.setItem("Movies", JSON.stringify(movies));
+localStorage.setItem("Tickets", JSON.stringify(tickets));
+}
 
 const linkMovie = document.querySelector("#movies");
 
@@ -150,6 +160,7 @@ function submitFormMovies() {
         };
 
         movies.push(movie);
+        localStorage.setItem("Movies", JSON.stringify(movies));
 
         renderMovies();
 
@@ -208,6 +219,7 @@ function divMovies() {
         i.className = "ti ti-trash";
         i.addEventListener("click", () => {
             movies.splice(index, 1);
+            localStorage.setItem("Movies", JSON.stringify(movies));
             renderMovies();
         });
         divBanner.append(i);
@@ -260,6 +272,7 @@ function newMovie(movie, index) {
     i.className = "ti ti-trash";
     i.addEventListener("click", () => {
         movies.splice(index, 1);
+        localStorage.setItem("Movies", JSON.stringify(movies));
         renderMovies();
     });
     divBanner.append(i);

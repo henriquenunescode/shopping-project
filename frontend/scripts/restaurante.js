@@ -1,15 +1,22 @@
 import { createFormMenu, createFormChefs } from "../scripts/formToggle.js";
 
-const dishs = [
+let dishs =  JSON.parse(localStorage.getItem("Dishs"));
+let chefs =  JSON.parse(localStorage.getItem("Chefs"));
+
+if(!dishs || !chefs){
+dishs = [
     {name: "Risoto de Camarão", category: "Pratos Principais", descrition: "Arroz arbóreo com camarão", price: 68.00},
     {name: "Peixe Assado", category: "Pratos Principais", descrition: "Assado de peixe com legumes chamuscados", price: 55.00},
     {name: "Tiramisù", category: "Sobremesas", descrition: "Sobremesa italiana clássica", price: 28.00}
 ];
-
-const chefs = [
+chefs = [
     {name: "Antônio Rossi", especialidade: "Cozinha Italiana"},
     {name: "Maria Dubois", especialidade: "Cozinha Francesa"},
-];
+];//preset caso null
+
+localStorage.setItem("Dishs", JSON.stringify(dishs));
+localStorage.setItem("Chefs", JSON.stringify(chefs));
+}
 
 const linkMenu = document.querySelector("#menu");
 
@@ -142,6 +149,8 @@ function submitMenu() {
         };
 
         dishs.push(dish);
+        localStorage.setItem("Dishs", JSON.stringify(dishs));
+        
 
         renderDishs();
 
@@ -199,6 +208,7 @@ function submitFormChef() {
         };
     
         chefs.push(chef);
+        localStorage.setItem("Chefs", JSON.stringify(chefs));
     
         renderChef();
     
@@ -246,6 +256,7 @@ function divDishs() {
         icon.className = "ti ti-trash";
         icon.addEventListener("click", () => {
             dishs.splice(index, 1);
+            localStorage.setItem("Dishs", JSON.stringify(dishs));
             renderDishs();
         });
 
@@ -315,6 +326,7 @@ function newDish(prato, index) {
     icon.className = "ti ti-trash";
     icon.addEventListener("click", () => {
         dishs.splice(index, 1);
+        localStorage.setItem("Dishs", JSON.stringify(dishs));
         renderDishs();
     });
 
@@ -353,6 +365,7 @@ function divChefs() {
         icon.className = "ti ti-trash";
         icon.addEventListener("click", () => {
             chefs.splice(index, 1);
+            localStorage.setItem("Chefs", JSON.stringify(chefs));
             renderChef();
         });
 
@@ -410,7 +423,7 @@ export function newChef(chef, index) {
         icon.className = "ti ti-trash";
         icon.addEventListener("click", () => {
             chefs.splice(index, 1);
-            
+            localStorage.setItem("Chefs", JSON.stringify(chefs));
             renderChef();
         });
 

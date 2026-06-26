@@ -1,10 +1,19 @@
 import {createFormKids} from "../scripts/formToggle.js";
 
-const toys = [
+let toys = JSON.parse(localStorage.getItem("kidStore"));
+
+if(!toys){
+
+toys= [
     {name: "Ingressos Área Kids", price: 45.00, age: "3-12 anos"},
     {name: "Pula-pula", price: 15.00, age: "4-10 anos"},
     {name: "Piscina de Bolinhas", price: 20.00, age: "2-8 anos"}
-];
+]; //preset caso null
+
+localStorage.setItem("kidStore", JSON.stringify(toys));
+}
+
+
 
 window.addEventListener("DOMContentLoaded", () => {
     divToys();
@@ -46,6 +55,9 @@ function divToys() {
         i.className = "ti ti-trash";
         i.addEventListener("click", () => {
             toys.splice(index, 1);
+            
+            localStorage.setItem("kidStore", JSON.stringify(toys));
+            
             renderToy();
         });
 
@@ -94,6 +106,8 @@ function submitFormKids() {
         };
 
         toys.push(toy);
+
+        localStorage.setItem("kidStore", JSON.stringify(toys));
 
         renderToy();
 
