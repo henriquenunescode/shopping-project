@@ -303,6 +303,7 @@ main {
 
             i {
                 font-size: 30px;
+                cursor: pointer;
             }
         }
 
@@ -325,6 +326,7 @@ main {
                     background-position: center;
                     background-size: cover;
                     background-repeat: no-repeat;
+                    margin-bottom: 15px;
 
                     .remove {
                         position: absolute;
@@ -370,10 +372,48 @@ main {
                             padding: 5px;
                             color: #fff;
                             border-radius: 5px;
+                            cursor: pointer;
                         }
                     }
 
                 }
+            }
+
+        }
+
+        .total-cart {
+            position: fixed;
+            bottom: 0;
+            width: calc(430px - 20px);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+
+            .total {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                justify-content: space-between;
+
+                h2 {
+                    font-family: "Vogue";
+                    font-weight: 400;
+                }
+
+                span {
+                    font-size: 20px;
+                    text-decoration: underline;
+                }
+            }
+
+            .comprar {
+                padding: 10px;
+                border: none;
+                background-color: #000;
+                color: white;
+                font-weight: 600;
+                cursor: pointer;
             }
         }
     }
