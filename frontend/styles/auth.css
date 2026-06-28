@@ -28,6 +28,16 @@ section {
     padding: 40px;
     border-radius: 20px;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
+    button {
+        font-family: "Sparkle Passion";
+        margin: 10px 0;
+        background-color: transparent;
+        border: none;
+        color: #2c365c;
+        font-size: 15px;
+        cursor: pointer;
+    }
     
     h1 {
         font-size: 40px;
@@ -61,6 +71,13 @@ section {
 
             label {
                 font-weight: 500;
+            }
+
+            select {
+                padding: 12px;
+                border-radius: 10px;
+                border: 1px solid #5c5c5c;
+                font-size: 16px;
             }
         }
 

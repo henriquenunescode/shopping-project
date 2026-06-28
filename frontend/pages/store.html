@@ -9,12 +9,13 @@
     <link rel="stylesheet" href="../styles/header-nav.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
     <script type="module" src="../scripts/formToggle.js" defer></script>
+    <script type="module" src="../scripts/store.js" defer></script>
 </head>
 <body>
     <header>
         <div class="link-button">
             <a href="#"><i class="ti ti-arrow-left"></i> VOLTAR</a>
-            <button><i class="ti ti-garden-cart"></i> Carrinho (<span>0</span>)</button>
+            <button id="open-cart"><i class="ti ti-garden-cart"></i> Carrinho (<span id="update-cart">0</span>)</button>
         </div>
         <div class="title-header">
             <span>MODA</span>
@@ -25,42 +26,20 @@
         <a href="#" id="products"><i class="ti ti-package"></i> PRODUTOS</a>
         <a href="#" id="funcionarios"><i class="ti ti-users-group"></i> FUNCIONÁRIOS</a>
     </nav>
-    <main id="main-content">
-        <aside class="cart-products">
-            <div class="title-cart">
-                <h2>Carrinho</h2>
-                <i class="ti ti-x"></i>
+    <main id="main-content"></main>
+    <aside class="cart-products">
+        <div class="title-cart">
+            <h2>Carrinho</h2>
+            <i class="ti ti-x" id="close-cart"></i>
+        </div>
+        <div class="list-cart"></div>
+        <div class="total-cart">
+            <div class="total">
+                <h2>Total</h2>
+                <span class="cart-total">R$ 0,00</span>
             </div>
-            <div class="list-cart">
-                <div class="product">
-                    <div class="image">
-                        <div class="remove">
-                            <i class="ti ti-trash"></i>
-                        </div>
-                    </div>
-                    <div class="name">
-                        <h3>Relógio</h3>
-                    </div>
-                    <div class="price">
-                        <span>R$ 199,90</span>
-                    </div>
-                    <div class="quantity">
-                        <div class="minus-maximus">
-                            <i class="ti ti-plus"></i>
-                            <span>1</span>
-                            <i class="ti ti-minus"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="total-cart">
-                <div class="total">
-                    <h2>Total</h2>
-                    <span class="cart-total">R$ 0,00</span>
-                </div>
-                <button class="comprar">Finalizar Compra</button>
-            </div>
-        </aside>
-    </main>
+            <button class="comprar">Finalizar Compra</button>
+        </div>
+    </aside>
 </body>
 </html>

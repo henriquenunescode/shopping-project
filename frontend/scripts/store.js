@@ -6,6 +6,8 @@ const products = [
     {name: "Tênis Nike", price: 149.90, reference: "ghi789", stock: 150, type: "kids"}
 ];
 
+const cart = [];
+
 const funcionarios = [
     {name: "João da Silva", cargo: "Gerente", email: "joao@gmail.com"},
     {name: "Maria Meirelles", cargo: "Vendedor(a)", email: "maria@gmail.com"}
@@ -14,6 +16,24 @@ const funcionarios = [
 const linkProducts = document.querySelector("#products");
 
 const linkFuncionarios = document.querySelector("#funcionarios");
+
+const openCart = document.querySelector("#open-cart");
+
+const asideCart = document.querySelector(".cart-products");
+
+const closeCart = document.querySelector("#close-cart");
+
+const finalizarCompra = document.querySelector(".comprar");
+
+finalizarCompra.addEventListener("click", finalizeCompra);
+
+openCart.addEventListener("click", () => {
+    asideCart.classList.add("active");
+});
+
+closeCart.addEventListener("click", () => {
+    asideCart.classList.remove("active");
+});
 
 function route() {
     const hash = window.location.hash;
@@ -193,6 +213,15 @@ function submitFormProduct() {
             alert("Preencha todos os campos corretamente!");
             return;
         }
+        
+        const exists = products.some((product) => {
+            return product.reference == reference;
+        });
+        
+        if (exists) {
+            alert("Já existe um produto com este código!");
+            return;
+        }
 
         const product = {
             name,
@@ -250,7 +279,7 @@ function divProducts() {
     const divGrid = createDiv();
     divGrid.classList.add("grid-products");
 
-    products.forEach((product, index) => {
+    products.forEach((product) => {
         const divProduct = createDiv();
         divProduct.classList.add("product");
 
@@ -268,6 +297,14 @@ function divProducts() {
         price.classList.add("price");
         const stock = createP("Estoque: " + product.stock);
         stock.classList.add("stock");
+        if (product.stock < 50) {
+            stock.classList.add("baixo");
+        } else if (product.stock < 100) {
+            stock.classList.add("medium");
+        } else {
+            stock.classList.add("alto");
+        }
+
         divInfoProduct.append(h3, price, stock);
 
         const select = createSelect("quantity", "quantity", ["Selecionar a quantidade", "1", "2", "3", "4", "5"]);
@@ -276,13 +313,42 @@ function divProducts() {
         divButtons.classList.add("buttons");
         const buttonAdd = createButton("Adicionar ao carrinho");
         buttonAdd.classList.add("add");
+        buttonAdd.addEventListener("click", () => {
+            const quantity = Number(select.value);
+
+            if (isNaN(quantity)) {
+                alert("Selecione uma quantidade!");
+                return;
+            }
+
+            const exists = cart.some((item) => {
+                return item.reference == product.reference;
+            });
+
+            if (exists) {
+                alert("Este produto já foi adicionado ao carrinho!");
+                return;
+            }
+            
+            const produto = {
+                name: product.name,
+                price: product.price,
+                type: product.type,
+                reference: product.reference,
+                quantity
+            };
+
+            cart.push(produto);
+
+            renderCart();
+        });
         const buttonRemove = createButtonIcon();
         buttonRemove.classList.add("icon-remove");
         const i = createI();
         i.className = "ti ti-trash";
         buttonRemove.append(i);
         buttonRemove.addEventListener("click", () => {
-            products.splice(index, 1);
+            removeProduct(product.reference);
             renderProducts();
         });
         divButtons.append(buttonAdd, buttonRemove);
@@ -368,7 +434,7 @@ function newFuncionario(funcionario, index) {
     return divFuncionario;
 }
 
-function newProduct(product, index) {
+function newProduct(product) {
     const divProduct = createDiv();
     divProduct.classList.add("product");
 
@@ -386,6 +452,14 @@ function newProduct(product, index) {
     price.classList.add("price");
     const stock = createP("Estoque: " + product.stock);
     stock.classList.add("stock");
+    if (product.stock < 50) {
+        stock.classList.add("baixo");
+    } else if (product.stock < 100) {
+        stock.classList.add("medium");
+    } else {
+        stock.classList.add("alto");
+    }
+
     divInfoProduct.append(h3, price, stock);
 
     const select = createSelect("quantity", "quantity", ["Selecionar a quantidade", "1", "2", "3", "4", "5"]);
@@ -394,20 +468,223 @@ function newProduct(product, index) {
     divButtons.classList.add("buttons");
     const buttonAdd = createButton("Adicionar ao carrinho");
     buttonAdd.classList.add("add");
+    buttonAdd.addEventListener("click", () => {
+        const quantity = Number(select.value);
+
+        if (isNaN(quantity)) {
+            alert("Selecione uma quantidade!");
+            return;
+        }
+
+        const exists = cart.some((item) => {
+            return item.reference == product.reference;
+        });
+
+        if (exists) {
+            alert("Este produto já foi adicionado ao carrinho!");
+            return;
+        }
+        
+        const produto = {
+            name: product.name,
+            price: product.price,
+            type: product.type,
+            reference: product.reference,
+            quantity
+        };
+
+        cart.push(produto);
+
+        renderCart();
+    });
     const buttonRemove = createButtonIcon();
     buttonRemove.classList.add("icon-remove");
     const i = createI();
     i.className = "ti ti-trash";
     buttonRemove.append(i);
     buttonRemove.addEventListener("click", () => {
-        products.splice(index, 1);
-        renderProducts();
+        removeProduct(product.reference);
     });
     divButtons.append(buttonAdd, buttonRemove);
 
     divProduct.append(img, divInfoProduct, select, divButtons);
 
     return divProduct;
+}
+
+function removeProduct(reference) {
+    const index = products.findIndex((item) => {
+        return item.reference == reference;
+    });
+
+    if (index != -1) {
+        products.splice(index, 1);
+        renderProducts();
+    } else {
+        alert("Produto não encontrado!");
+    }
+}
+
+function updateTotal() {
+    const totalCart = document.querySelector(".cart-total");
+
+    const total = cart.reduce((acc, item) => {
+        return acc += (item.price * item.quantity);
+    }, 0);
+
+    totalCart.textContent = total.toLocaleString("pt-BR", {
+        style: "currency",
+        currency: "BRL"
+    });
+}
+
+function updateCart() {
+    const update = document.querySelector("#update-cart");
+
+    update.textContent = cart.length;
+}
+
+function renderCart() {
+    const listCart = document.querySelector(".list-cart");
+
+    listCart.replaceChildren();
+
+    cart.forEach((produto) => {
+        const card = productCart(produto, produto.quantity);
+        listCart.appendChild(card);
+    });
+
+    updateTotal();
+    updateCart();
+}
+
+function productCart(product, quantity) {
+    const divProduct = createDiv();
+    divProduct.classList.add("product");
+
+    const divImage = createDiv();
+    divImage.classList.add("image");
+    const divRemove = createDiv();
+    divRemove.classList.add("remove");
+    const iconRemove = createI();
+    iconRemove.className = "ti ti-trash";
+    divRemove.append(iconRemove);
+    divImage.append(divRemove);
+    divRemove.addEventListener("click", () => {
+        removeFromCart(product.reference);
+    });
+
+    const divName = createDiv();
+    divName.classList.add("name");
+    const h3 = createH3(product.name);
+    divName.append(h3);
+
+    const divPrice = createDiv();
+    divPrice.classList.add("price");
+    const spanPrice = createSpan(product.price.toLocaleString("pt-BR", {
+        style: "currency",
+        currency: "BRL"
+    }));
+    divPrice.append(spanPrice);
+
+    const divQuantity = createDiv();
+    divQuantity.classList.add("quantity");
+    const divMinusPlus = createDiv();
+    divMinusPlus.classList.add("minus-maximus");
+    const iMinus = createI();
+    iMinus.addEventListener("click", () => {
+        const item = cart.find((produto) => {
+            return produto.reference == product.reference;
+        });
+
+        if (!item) {
+            return;
+        }
+
+        if (item.quantity > 1) {
+            item.quantity--;
+        } else {
+            removeFromCart(product.reference);
+        }
+
+        renderCart();
+    });
+
+    iMinus.className = "ti ti-minus";
+    const spanQuantity = createSpan(quantity);
+    const iPlus = createI();
+    iPlus.className = "ti ti-plus";
+    iPlus.addEventListener("click", () => {
+        const item = cart.find((produto) => {
+            return produto.reference == product.reference;
+        });
+
+        const stock = products.find((produto) => {
+            return produto.reference == product.reference;
+        });
+
+        if (!item || !stock) {
+            return;
+        }
+
+        if (item.quantity < stock.stock) {
+            item.quantity++;
+
+            renderCart();
+        } else {
+            alert("Estoque insuficiente!");
+        }
+    })
+
+    divMinusPlus.append(iMinus, spanQuantity, iPlus);
+    divQuantity.append(divMinusPlus);
+
+    divProduct.append(divImage, divName, divPrice, divQuantity);
+
+    return divProduct;
+
+}
+
+function removeFromCart(reference) {
+    const index = cart.findIndex((item) => {
+        return item.reference == reference;
+    });
+
+    if (index != -1) {
+        cart.splice(index, 1);
+        renderCart();
+    }
+}
+
+function finalizeCompra() {
+    if (cart.length == 0) {
+        alert("O carrinho está vazio!");
+        return;
+    }
+
+    cart.forEach((item) => {
+        const index = products.findIndex((produto) => {
+            return produto.reference == item.reference;
+        });
+
+       if (index != -1) {
+        products[index].stock -= item.quantity;
+
+            if (products[index].stock <= 0) {
+                alert("Produto removido por falta de estoque: " + products[index].name);
+
+                products.splice(index, 1);
+
+            }
+       }
+    });
+
+    cart.length = 0;
+
+    renderProducts();
+    renderCart();
+
+    alert("Compra finalizada com sucesso!");
 }
 
 function createSelect(name, id, options) {
