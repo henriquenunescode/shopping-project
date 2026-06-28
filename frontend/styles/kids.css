@@ -1,0 +1,70 @@
+.grid-kids {
+    padding: 30px 0;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 30px;
+
+    .area {
+        width: 325px;
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
+        justify-content: space-between;
+        padding: 20px;
+        background-color: #fff;
+        border: none;
+        border-left: 4px solid #05102d;
+        border-radius: 10px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+        transition: tranform 0.1s;
+
+            &:hover {
+                transform: scale(1.1);
+                cursor: pointer;
+            }
+
+        .kids {
+            width: calc(325px - 125px);
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+
+            h3 {
+                font-size: 20px;
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                font-weight: 600;
+                color: #d17000;
+            }
+
+            p {
+                font-size: 15px;
+                color: #5c5c5c;
+            }
+
+            span {
+                font-size: 18px;
+                font-weight: 600;
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            }
+
+            button {
+                border: none;
+                padding: 10px 5px;
+                border-radius: 10px;
+                background-color: #05102d;
+                color: #fff;
+                font-weight: 600;
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                transition: all 0.3s;
+
+                &:hover {
+                    background-color: #eeed8f;
+                    color: #000;
+                }
+            }
+        }
+    }
+}
