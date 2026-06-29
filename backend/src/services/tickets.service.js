@@ -8,7 +8,14 @@ async function create(data) {
       sessao: data.sessao
     },
     include: {
-      user: true,
+      user: {
+        select: {
+          user_id: true,
+          nome: true,
+          email: true,
+          google_id: true
+        }
+      },
       movie: true
     }
   })
@@ -17,7 +24,14 @@ async function create(data) {
 async function findAll() {
   return prisma.tickets.findMany({
     include: {
-      user: true,
+      user: {
+        select: {
+          user_id: true,
+          nome: true,
+          email: true,
+          google_id: true
+        }
+      },
       movie: true
     }
   })
@@ -29,7 +43,14 @@ async function findById(id) {
       tickets_id: Number(id)
     },
     include: {
-      user: true,
+      user: {
+        select: {
+          user_id: true,
+          nome: true,
+          email: true,
+          google_id: true
+        }
+      },
       movie: true
     }
   })

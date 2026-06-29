@@ -6,12 +6,7 @@ function getToken() {
 
 function getUser() {
   const user = localStorage.getItem("user")
-
-  if (!user) {
-    return null
-  }
-
-  return JSON.parse(user)
+  return user ? JSON.parse(user) : null
 }
 
 async function apiRequest(endpoint, options = {}) {
@@ -39,3 +34,7 @@ async function apiRequest(endpoint, options = {}) {
 
   return data
 }
+
+window.apiRequest = apiRequest
+window.getToken = getToken
+window.getUser = getUser

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,8 +8,11 @@
     <link rel="stylesheet" href="../styles/global.css">
     <link rel="stylesheet" href="../styles/dashglobal.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+    <script src="../scripts/auth-check.js"></script>
+    <script src="../js/api.js"></script>
     <script src="../scripts/dashboard.js" defer></script>
 </head>
+
 <body>
     <header>
         <div id="title">
@@ -21,7 +25,7 @@
                 <input type="search" placeholder="Buscar lojas, produtos...">
             </form>
             <a href="../index.html"><i class="ti ti-home home-logout"></i></a>
-            <a href="login.html"><i class="ti ti-logout home-logout"></i></a>
+            <a href="login.html" id="logoutBtn"><i class="ti ti-logout home-logout"></i></a>
         </div>
     </header>
     <nav>
@@ -30,10 +34,11 @@
         <a href="#entretenimento"><i class="ti ti-movie"></i> ENTRETENIMENTO</a>
         <a href="#servicos"><i class="ti ti-tool"></i> SERVIÇOS</a>
         <a href="#contato"><i class="ti ti-phone"></i> CONTATO</a>
+        <a href="#historico"><i class="ti ti-user"></i> MINHA CONTA</a>
     </nav>
     <section id="banner">
         <i class="ti ti-focus"></i>
-        <h2><span>Olá,</span> Usuário!</h2>
+        <h2><span>Olá,</span> <span id="userName">Usuário</span>!</h2>
     </section>
     <main>
         <section id="lojas">
@@ -109,10 +114,10 @@
                 </div>
                 <div id="text-gastronomia">
                     <p>
-                        No Lem' Mar, os sabores do oceano encontram a tradição da 
-                        boa gastronomia. Selecionamos ingredientes frescos e 
-                        preparamos cada prato com cuidado para proporcionar uma 
-                        experiência única, marcada pela qualidade, pelo sabor e 
+                        No Lem' Mar, os sabores do oceano encontram a tradição da
+                        boa gastronomia. Selecionamos ingredientes frescos e
+                        preparamos cada prato com cuidado para proporcionar uma
+                        experiência única, marcada pela qualidade, pelo sabor e
                         pela essência do mar.
                     </p>
                 </div>
@@ -138,26 +143,26 @@
             <h2>Serviços</h2>
             <div class="conveniencias">
                 <div class="cards-servicos">
-                     <div>
-                         <i class="ti ti-car"></i>
-                         <span>Estacionamento</span>
-                         <p>2.400 vagas cobertas</p>
-                     </div>
-                     <div>
-                         <i class="ti ti-building-bank"></i>
-                         <span>Caixas 24h</span>
-                         <p>Todos os bancos</p>
-                     </div>
-                     <div>
-                         <i class="ti ti-user"></i>
-                         <span>Atendimento ao Cliente</span>
-                         <p>Piso L1, Ala Norte</p>
-                     </div>
-                     <div>
-                         <i class="ti ti-wifi"></i>
-                         <span>Wi-Fi Gratuito</span>
-                         <p>Cobertura total</p>
-                     </div>
+                    <div>
+                        <i class="ti ti-car"></i>
+                        <span>Estacionamento</span>
+                        <p>2.400 vagas cobertas</p>
+                    </div>
+                    <div>
+                        <i class="ti ti-building-bank"></i>
+                        <span>Caixas 24h</span>
+                        <p>Todos os bancos</p>
+                    </div>
+                    <div>
+                        <i class="ti ti-user"></i>
+                        <span>Atendimento ao Cliente</span>
+                        <p>Piso L1, Ala Norte</p>
+                    </div>
+                    <div>
+                        <i class="ti ti-wifi"></i>
+                        <span>Wi-Fi Gratuito</span>
+                        <p>Cobertura total</p>
+                    </div>
                 </div>
             </div>
         </section>
@@ -190,6 +195,29 @@
                 </div>
             </div>
         </section>
+        <section id="historico">
+            <span class="title-section">M I N H A C O N T A</span>
+            <h2>Meu Histórico</h2>
+
+            <div id="usuarioContainer" class="user-info"></div>
+
+            <div class="history-grid">
+                <div class="history-box">
+                    <h3>Pedidos</h3>
+                    <div id="ordersContainer"></div>
+                </div>
+
+                <div class="history-box">
+                    <h3>Ingressos</h3>
+                    <div id="ticketsContainer"></div>
+                </div>
+
+                <div class="history-box">
+                    <h3>Locações</h3>
+                    <div id="rentalsContainer"></div>
+                </div>
+            </div>
+        </section>
     </main>
     <footer>
         <div class="footer-links">
@@ -214,4 +242,5 @@
         <p class="copy">&copy; 2026 Gen-Eva Shopping. Todos os direitos reservados.</p>
     </footer>
 </body>
+
 </html>
