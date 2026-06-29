@@ -32,6 +32,7 @@ services:
     environment:
       DATABASE_URL: mysql://admin:admin123@db:3306/shopping
       PORT: 3000
+      JWT_SECRET: secret_key_omg_lmfao
 
     depends_on:
       db:

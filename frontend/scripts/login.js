@@ -1,3 +1,6 @@
+localStorage.removeItem("token")
+localStorage.removeItem("user")
+
 const loginForm = document.querySelector("form")
 
 loginForm.addEventListener("submit", async (event) => {

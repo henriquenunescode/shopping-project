@@ -1,3 +1,5 @@
+const storesContainer = document.querySelector("#storesContainer")
+
 const clickAlimentacao = document.querySelector("#alimentacao")
 const clickKids = document.querySelector("#img-kids")
 const clickCine = document.querySelector("#img-lazer")
@@ -36,6 +38,67 @@ if (logoutBtn) {
 
         window.location.href = "./login.html"
     })
+}
+
+async function carregarLojas() {
+    if (!storesContainer) {
+        return
+    }
+
+    try {
+        const stores = await window.apiRequest("/stores")
+        renderLojas(stores)
+    } catch (error) {
+        storesContainer.innerHTML = `<p>${error.message}</p>`
+    }
+}
+
+function renderLojas(stores) {
+    storesContainer.innerHTML = ""
+
+    stores.forEach((store) => {
+        const card = document.createElement("div")
+
+        card.id = escolherImagemLoja(store.tipo)
+        card.classList.add("cards")
+
+        card.innerHTML = `
+            <div>
+                <span>${store.tipo}</span>
+                <h3>${store.nome}</h3>
+            </div>
+        `
+
+        if (store.nome === "Boutique Élite") {
+            card.addEventListener("click", () => {
+                window.location.href = "./store.html"
+            })
+        }
+
+        storesContainer.appendChild(card)
+    })
+}
+
+function escolherImagemLoja(tipo) {
+    const tipoLower = tipo.toLowerCase()
+
+    if (tipoLower.includes("moda")) {
+        return "img-boutique"
+    }
+
+    if (tipoLower.includes("casa")) {
+        return "img-casa"
+    }
+
+    if (tipoLower.includes("tecnologia")) {
+        return "img-tech"
+    }
+
+    if (tipoLower.includes("beleza")) {
+        return "img-parfum"
+    }
+
+    return "img-boutique"
 }
 
 async function carregarHistorico() {
@@ -170,3 +233,4 @@ function renderRentals(rentals) {
 }
 
 carregarHistorico()
+carregarLojas()
