@@ -1,29 +1,44 @@
-import {createFormCine} from "../scripts/formToggle.js";
+import { createFormCine } from "../scripts/formToggle.js";
 
-const movies = [
-    {name: "Invocação do Mal", duration: "1h52min", category: "kids"},
-    {name: "Gente Grande", duration: "1h42min", category: "kids"}
-];
+let movies = [];
 
 const tickets = [
-    {name: "Ingresso Inteiro", type: "Ingresso", price: 35.00},
-    {name: "Ingresso Meia", type: "Ingresso", price: 17.50},
-    {name: "Refrigerante 500ml", type: "Bebida", price: 10.00},
-    {name: "Pipoca Grande", type: "Alimento", price: 25.00},
-    {name: "Pipoca Média", type: "Alimento", price: 20.00},
-    {name: "Pipoca Pequena", type: "Alimento", price: 15.00}
+    { name: "Ingresso Inteiro", type: "Ingresso", price: 35.00 },
+    { name: "Ingresso Meia", type: "Ingresso", price: 17.50 },
+    { name: "Refrigerante 500ml", type: "Bebida", price: 10.00 },
+    { name: "Pipoca Grande", type: "Alimento", price: 25.00 },
+    { name: "Pipoca Média", type: "Alimento", price: 20.00 },
+    { name: "Pipoca Pequena", type: "Alimento", price: 15.00 }
 ];
+
+async function carregarMoviesDoBanco() {
+    try {
+        const moviesFromApi = await window.apiRequest("/movies")
+
+        movies = moviesFromApi.map((movie) => {
+            return {
+                id: movie.movies_id,
+                name: movie.titulo,
+                duration: movie.duracao,
+                category: movie.genero
+            }
+        })
+    } catch (error) {
+        alert(error.message)
+    }
+}
 
 const linkMovie = document.querySelector("#movies");
 
 const linkTickets = document.querySelector("#tickets");
 
-function route() {
+async function route() {
     const hash = window.location.hash;
 
     if (hash == "#tickets") {
         renderPageTickets();
     } else {
+        await carregarMoviesDoBanco();
         renderPageMovie();
         window.location.hash = "#movies";
     }
@@ -44,6 +59,25 @@ linkMovie.addEventListener("click", (event) => {
 
     window.location.hash = "#movies";
 });
+
+async function deletarFilme(movieId) {
+    const confirmar = confirm("Tem certeza que deseja apagar este filme?")
+
+    if (!confirmar) {
+        return
+    }
+
+    try {
+        await window.apiRequest(`/movies/${movieId}`, {
+            method: "DELETE"
+        })
+
+        await carregarMoviesDoBanco()
+        renderMovies()
+    } catch (error) {
+        alert(error.message)
+    }
+}
 
 function renderPageTickets() {
     const main = document.querySelector("#main-content");
@@ -129,7 +163,7 @@ function renderFormCine() {
 function submitFormMovies() {
     const formCine = document.querySelector("#form-cine");
 
-    formCine.addEventListener("submit", (event) => {
+    formCine.addEventListener("submit", async (event) => {
         event.preventDefault();
 
         const dados = getMovies(formCine);
@@ -143,19 +177,24 @@ function submitFormMovies() {
             return;
         }
 
-        const movie = {
-            name,
-            duration,
-            category
-        };
+        try {
+            await window.apiRequest("/movies", {
+                method: "POST",
+                body: JSON.stringify({
+                    titulo: name,
+                    genero: category,
+                    duracao: Number(duration)
+                })
+            })
 
-        movies.push(movie);
+            await carregarMoviesDoBanco()
+            renderMovies()
 
-        renderMovies();
-
-        formCine.reset();
-
-        document.querySelector("input[name= 'name']").focus();
+            formCine.reset()
+            document.querySelector("input[name='name']").focus()
+        } catch (error) {
+            alert(error.message)
+        }
     });
 }
 
@@ -207,22 +246,27 @@ function divMovies() {
         const i = createI();
         i.className = "ti ti-trash";
         i.addEventListener("click", () => {
-            movies.splice(index, 1);
-            renderMovies();
+            deletarFilme(movie.id);
         });
         divBanner.append(i);
 
         const divInfo = createDiv();
         divInfo.classList.add("info");
         const h3 = createH3(movie.name);
-        const span = createSpan(movie.duration);
+        const span = createSpan(`${movie.duration} min`);
         const divSessions = createDiv();
         divSessions.classList.add("session");
         const p1 = createP("14:00");
         const p2 = createP("18:30");
         const p3 = createP("20:00");
         divSessions.append(p1, p2, p3);
-        divInfo.append(h3, span, divSessions);
+        const buttonComprar = createButton("COMPRAR INGRESSO");
+        buttonComprar.addEventListener("click", () => comprarIngresso(movie.id));
+
+        const buttonAlugar = createButton("ALUGAR FILME");
+        buttonAlugar.addEventListener("click", () => alugarFilme(movie.id));
+
+        divInfo.append(h3, span, divSessions, buttonComprar, buttonAlugar);
 
         divInfoBanner.append(divBanner, divInfo);
 
@@ -259,22 +303,27 @@ function newMovie(movie, index) {
     const i = createI();
     i.className = "ti ti-trash";
     i.addEventListener("click", () => {
-        movies.splice(index, 1);
-        renderMovies();
+        deletarFilme(movie.id);
     });
     divBanner.append(i);
 
     const divInfo = createDiv();
     divInfo.classList.add("info");
     const h3 = createH3(movie.name);
-    const span = createSpan(movie.duration);
+    const span = createSpan(`${movie.duration} min`);
     const divSessions = createDiv();
     divSessions.classList.add("session");
     const p1 = createP("14:00");
     const p2 = createP("18:30");
     const p3 = createP("20:00");
     divSessions.append(p1, p2, p3);
-    divInfo.append(h3, span, divSessions);
+    const buttonComprar = createButton("COMPRAR INGRESSO");
+    buttonComprar.addEventListener("click", () => comprarIngresso(movie.id));
+
+    const buttonAlugar = createButton("ALUGAR FILME");
+    buttonAlugar.addEventListener("click", () => alugarFilme(movie.id));
+
+    divInfo.append(h3, span, divSessions, buttonComprar, buttonAlugar);
 
     divInfoBanner.append(divBanner, divInfo);
 
@@ -290,7 +339,57 @@ function getMovies(form) {
     const duration = dados.get("duration");
     const category = dados.get("category");
 
-    return {name, duration, category};
+    return { name, duration, category };
+}
+
+async function comprarIngresso(movieId) {
+    const user = window.getUser()
+
+    if (!user) {
+        alert("Você precisa estar logado")
+        window.location.href = "./login.html"
+        return
+    }
+
+    try {
+        await window.apiRequest("/tickets", {
+            method: "POST",
+            body: JSON.stringify({
+                user_fk: user.user_id,
+                movie_fk: movieId,
+                sessao: "20:30"
+            })
+        })
+
+        alert("Ingresso comprado com sucesso!")
+    } catch (error) {
+        alert(error.message)
+    }
+}
+
+async function alugarFilme(movieId) {
+    const user = window.getUser()
+
+    if (!user) {
+        alert("Você precisa estar logado")
+        window.location.href = "./login.html"
+        return
+    }
+
+    try {
+        await window.apiRequest("/rentals", {
+            method: "POST",
+            body: JSON.stringify({
+                user_fk: user.user_id,
+                movie_fk: movieId,
+                data_final: "2026-06-20"
+            })
+        })
+
+        alert("Filme alugado com sucesso!")
+    } catch (error) {
+        alert(error.message)
+    }
 }
 
 function createDiv() {
