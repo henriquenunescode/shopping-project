@@ -2,14 +2,41 @@ import { createFormCine } from "../scripts/formToggle.js";
 
 let movies = [];
 
-const tickets = [
-    { name: "Ingresso Inteiro", type: "Ingresso", price: 35.00 },
-    { name: "Ingresso Meia", type: "Ingresso", price: 17.50 },
-    { name: "Refrigerante 500ml", type: "Bebida", price: 10.00 },
-    { name: "Pipoca Grande", type: "Alimento", price: 25.00 },
-    { name: "Pipoca Média", type: "Alimento", price: 20.00 },
-    { name: "Pipoca Pequena", type: "Alimento", price: 15.00 }
-];
+let tickets = [];
+
+async function carregarProdutosCinema() {
+    try {
+        const products = await window.apiRequest("/products")
+
+        tickets = products
+            .filter((product) => product.store_fk === 3)
+            .map((product) => {
+                return {
+                    product_fk: product.product_id,
+                    name: product.nome,
+                    type: definirTipoProdutoCinema(product.nome),
+                    price: Number(product.preco),
+                    estoque: product.estoque
+                }
+            })
+    } catch (error) {
+        alert(error.message)
+    }
+}
+
+function definirTipoProdutoCinema(nome) {
+    const nomeLower = nome.toLowerCase()
+
+    if (nomeLower.includes("ingresso")) {
+        return "Ingresso"
+    }
+
+    if (nomeLower.includes("refrigerante")) {
+        return "Bebida"
+    }
+
+    return "Alimento"
+}
 
 async function carregarMoviesDoBanco() {
     try {
@@ -36,6 +63,7 @@ async function route() {
     const hash = window.location.hash;
 
     if (hash == "#tickets") {
+        await carregarProdutosCinema()
         renderPageTickets();
     } else {
         await carregarMoviesDoBanco();
@@ -219,6 +247,16 @@ function divTickets() {
         const divButton = createDiv();
         divButton.classList.add("add-button");
         const button = createButton("COMPRAR");
+
+        if (ticket.estoque <= 0) {
+            button.disabled = true
+            button.textContent = "SEM ESTOQUE"
+        }
+
+        button.addEventListener("click", () => {
+            comprarProdutoCinema(ticket.product_fk)
+        })
+
         divButton.append(button);
 
         divTicket.append(divInfo, divButton);
@@ -387,6 +425,38 @@ async function alugarFilme(movieId) {
         })
 
         alert("Filme alugado com sucesso!")
+    } catch (error) {
+        alert(error.message)
+    }
+}
+
+async function comprarProdutoCinema(product_fk) {
+    const user = window.getUser()
+
+    if (!user) {
+        alert("Você precisa estar logado")
+        window.location.href = "./login.html"
+        return
+    }
+
+    try {
+        await window.apiRequest("/orders", {
+            method: "POST",
+            body: JSON.stringify({
+                user_fk: user.user_id,
+                items: [
+                    {
+                        product_fk,
+                        quantidade: 1
+                    }
+                ]
+            })
+        })
+
+        alert("Compra realizada com sucesso!")
+
+        await carregarProdutosCinema()
+        renderPageTickets()
     } catch (error) {
         alert(error.message)
     }
