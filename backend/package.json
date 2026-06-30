@@ -4,7 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon src/server.js"
+    "dev": "nodemon src/server.js",
+    "prisma:push": "prisma db push",
+    "seed": "node prisma/seed.js",
+    "setup:db": "prisma db push && node prisma/seed.js"
   },
   "keywords": [],
   "author": "",

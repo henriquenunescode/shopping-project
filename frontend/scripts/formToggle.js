@@ -92,7 +92,7 @@ export function createFormCine() {
 
     const fieldName = createInput("text", "name", "Nome do filme");
 
-    const fieldDuration = createInput("text", "duration", "Duração (ex: 2h15min)");
+    const fieldDuration = createInput("number", "duration", "Duração (ex: 130)");
 
     const fieldSelect = createSelect("category", "category", ["Selecionar a categoria", "Terror", "Romance", "Comédia", "Thriller/Suspense", "Ação", "Aventura", "kids"]);
 
