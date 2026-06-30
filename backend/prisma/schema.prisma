@@ -13,11 +13,17 @@ datasource db {
 // -------------------------------------------
 // Usuários do sistema
 // -------------------------------------------
+enum tipo_Enum {
+  USER
+  ADMIN  
+}
+
 model users {
   user_id   Int     @id @default(autoincrement())
   nome      String  @db.VarChar(50)
   email     String  @unique @db.VarChar(70)
   senha     String  @db.VarChar(200)
+  tipo      tipo_Enum @default(USER)
   google_id String? @unique @db.VarChar(200)
 
   // Relações
