@@ -25,17 +25,17 @@ main {
                     flex-direction: column;
                     gap: 10px;
 
-                    
+
                     p.descrition {
                         color: #5c5c5c;
                     }
-                    
+
                     p.price {
                         font-size: 18px;
                         font-weight: 600;
                     }
                 }
-                
+
                 .name-category {
                     display: flex;
                     align-items: center;
@@ -103,4 +103,181 @@ main {
             }
         }
     }
+}
+
+#main-content {
+    padding: 32px 24px 60px;
+}
+
+#section-menu,
+#section-chefs {
+    width: 100%;
+}
+
+#section-menu .title-section,
+#section-chefs .title-section {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 32px;
+}
+
+#section-menu .title-section h2,
+#section-chefs .title-section h2 {
+    font-family: "Vogue";
+    font-size: 42px;
+    font-weight: 400;
+    color: #30395f;
+    text-transform: uppercase;
+}
+
+#section-menu .title-section button,
+#section-chefs .title-section button {
+    width: 220px;
+    padding: 12px;
+    border: none;
+    border-radius: 6px;
+    background-color: #30395f;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+#section-menu #container,
+#section-chefs #container {
+    margin-bottom: 32px;
+}
+
+.grid-pratos {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.pratos {
+    background-color: #fff;
+    border-bottom: 4px solid #30395f;
+    padding: 24px 28px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.info-prato {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.name-category {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.name-category h3 {
+    color: #d17000;
+    font-size: 18px;
+}
+
+.name-category span {
+    font-weight: bold;
+    color: #101833;
+}
+
+.descrition {
+    color: #555;
+}
+
+.price {
+    font-weight: bold;
+    color: #000;
+}
+
+.grid-chefs {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.chefs {
+    background-color: #fff;
+    border-left: 4px solid #30395f;
+    padding: 24px 28px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.info-chefs {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.info-chefs i {
+    font-size: 28px;
+    color: #30395f;
+}
+
+.info-chefs h3 {
+    color: #30395f;
+    font-size: 20px;
+}
+
+.info-chefs span {
+    color: #555;
+}
+
+.icon-remove {
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 10px;
+    background-color: #ff5a5f;
+    border: 1px solid #ff5a5f;
+    font-size: 18px;
+    color: #e5e5e5;
+    transition: all 0.3s;
+}
+
+.icon-remove:hover {
+    background-color: #5c5c5c;
+    border: 1px solid #5c5c5c;
+    color: #000;
+}
+
+.container-form {
+    background-color: #fff;
+    padding: 32px;
+    border-top: 4px solid #30395f;
+    margin-bottom: 32px;
+}
+
+.container-form h3 {
+    font-family: "Vogue";
+    font-size: 32px;
+    font-weight: 400;
+    color: #30395f;
+    margin-bottom: 24px;
+}
+
+.container-form input,
+.container-form select {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 14px;
+    border: none;
+    border-radius: 8px;
+    background-color: #eee9e1;
+}
+
+.container-form button {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    background-color: #30395f;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
 }

@@ -5,7 +5,8 @@ const safeUserSelect = {
   user_id: true,
   nome: true,
   email: true,
-  google_id: true
+  google_id: true,
+  tipo: true
 }
 
 async function create(data) {
@@ -39,6 +40,9 @@ async function findById(id) {
 
 async function update(id, data) {
   const updateData = { ...data }
+
+  delete updateData.tipo
+  delete updateData.user_id
 
   if (data.senha) {
     updateData.senha = await bcrypt.hash(data.senha, 10)
@@ -92,11 +96,61 @@ async function findHistory(id) {
   })
 }
 
+async function clearHistory(id) {
+  const userId = Number(id)
+
+  return prisma.$transaction(async (tx) => {
+    const orders = await tx.orders.findMany({
+      where: {
+        user_fk: userId
+      },
+      select: {
+        orders_id: true
+      }
+    })
+
+    const orderIds = orders.map((order) => order.orders_id)
+
+    if (orderIds.length > 0) {
+      await tx.order_items.deleteMany({
+        where: {
+          order_fk: {
+            in: orderIds
+          }
+        }
+      })
+    }
+
+    await tx.orders.deleteMany({
+      where: {
+        user_fk: userId
+      }
+    })
+
+    await tx.tickets.deleteMany({
+      where: {
+        user_fk: userId
+      }
+    })
+
+    await tx.rentals.deleteMany({
+      where: {
+        user_fk: userId
+      }
+    })
+
+    return {
+      message: "Histórico limpo com sucesso"
+    }
+  })
+}
+
 module.exports = {
   create,
   findAll,
   findById,
   update,
   remove,
-  findHistory
+  findHistory,
+  clearHistory
 }

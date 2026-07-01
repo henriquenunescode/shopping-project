@@ -1,5 +1,9 @@
 import {createFormKids} from "../scripts/formToggle.js";
 
+function isGerenteAtual() {
+    return window.isGerente && window.isGerente();
+}
+
 const toys = [
     {name: "Ingressos Área Kids", price: 45.00, age: "3-12 anos"},
     {name: "Pula-pula", price: 15.00, age: "4-10 anos"},
@@ -7,12 +11,18 @@ const toys = [
 ];
 
 window.addEventListener("DOMContentLoaded", () => {
+    const button = document.querySelector("#new-item");
+
+    if (button) {
+        if (!isGerenteAtual()) {
+            button.style.display = "none";
+        } else {
+            button.addEventListener("click", renderFormKids);
+        }
+    }
+
     divToys();
 });
-
-const button = document.querySelector("#new-item");
-
-button.addEventListener("click", renderFormKids);
 
 function divToys() {
     const divGrid = document.querySelector(".grid-kids");
@@ -39,19 +49,22 @@ function divToys() {
 
         divInfoToy.append(h3, p, span, button);
 
-        const divIcon = createDiv();
-        divIcon.classList.add("icon-remove");
+        divToy.append(divInfoToy);
 
-        const i = createI();
-        i.className = "ti ti-trash";
-        i.addEventListener("click", () => {
-            toys.splice(index, 1);
-            renderToy();
-        });
+        if (isGerenteAtual()) {
+            const divIcon = createDiv();
+            divIcon.classList.add("icon-remove");
 
-        divIcon.append(i);
+            const i = createI();
+            i.className = "ti ti-trash";
+            i.addEventListener("click", () => {
+                toys.splice(index, 1);
+                renderToy();
+            });
 
-        divToy.append(divInfoToy, divIcon);
+            divIcon.append(i);
+            divToy.append(divIcon);
+        }
 
         divGrid.append(divToy);
 
@@ -145,19 +158,22 @@ function newToy(toy, index) {
 
     divInfoToy.append(h3, p, span, button);
 
-    const divIcon = createDiv();
-    divIcon.classList.add("icon-remove");
+    divToy.append(divInfoToy);
 
-    const i = createI();
-    i.className = "ti ti-trash";
-    i.addEventListener("click", () => {
-        toys.splice(index, 1);
-        renderToy();
-    });
+    if (isGerenteAtual()) {
+        const divIcon = createDiv();
+        divIcon.classList.add("icon-remove");
 
-    divIcon.append(i);
+        const i = createI();
+        i.className = "ti ti-trash";
+        i.addEventListener("click", () => {
+            toys.splice(index, 1);
+            renderToy();
+        });
 
-    divToy.append(divInfoToy, divIcon);
+        divIcon.append(i);
+        divToy.append(divIcon);
+    }
 
     return divToy;
 }

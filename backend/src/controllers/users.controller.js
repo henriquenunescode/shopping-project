@@ -32,6 +32,12 @@ async function findById(req, res, next) {
 
 async function update(req, res, next) {
   try {
+    if (req.user.tipo !== "ADMIN" && Number(req.params.id) !== Number(req.user.user_id)) {
+      return res.status(403).json({
+        message: "Você só pode atualizar o seu próprio usuário"
+      })
+    }
+
     const user = await usersService.update(
       req.params.id,
       req.body
@@ -55,11 +61,33 @@ async function remove(req, res, next) {
 
 async function findHistory(req, res, next) {
   try {
+    if (req.user.tipo !== "ADMIN" && Number(req.params.id) !== Number(req.user.user_id)) {
+      return res.status(403).json({
+        message: "Você só pode acessar o seu próprio histórico"
+      })
+    }
+
     const history = await usersService.findHistory(
       req.params.id
     )
 
     res.json(history)
+  } catch (err) {
+    next(err)
+  }
+}
+
+async function clearHistory(req, res, next) {
+  try {
+    if (req.user.tipo !== "ADMIN" && Number(req.params.id) !== Number(req.user.user_id)) {
+      return res.status(403).json({
+        message: "Você só pode limpar o seu próprio histórico"
+      })
+    }
+
+    const result = await usersService.clearHistory(req.params.id)
+
+    res.json(result)
   } catch (err) {
     next(err)
   }
@@ -71,5 +99,6 @@ module.exports = {
   findById,
   update,
   remove,
-  findHistory
+  findHistory,
+  clearHistory
 }

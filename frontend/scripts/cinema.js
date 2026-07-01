@@ -171,6 +171,11 @@ function divTitleMovie() {
 
     const button = createButton("+ Novo Filme");
     button.id = "new-movie";
+
+    if (!window.isGerente()) {
+        button.style.display = "none";
+    }
+
     button.addEventListener("click", renderFormCine);
 
     div.append(h2, button);
@@ -283,6 +288,11 @@ function divMovies() {
         divBanner.style.backgroundImage = "url(../assets/images/" + movie.category + ".jpg)";
         const i = createI();
         i.className = "ti ti-trash";
+
+        if (!window.isGerente()) {
+            i.style.display = "none";
+        }
+
         i.addEventListener("click", () => {
             deletarFilme(movie.id);
         });
@@ -340,6 +350,11 @@ function newMovie(movie, index) {
     divBanner.style.backgroundImage = "url(../assets/images/" + movie.category + ".jpg)";
     const i = createI();
     i.className = "ti ti-trash";
+
+    if (!window.isGerente()) {
+        i.style.display = "none";
+    }
+
     i.addEventListener("click", () => {
         deletarFilme(movie.id);
     });
@@ -461,6 +476,17 @@ async function comprarProdutoCinema(product_fk) {
         alert(error.message)
     }
 }
+
+
+setInterval(async () => {
+    if (window.location.hash === "#tickets") {
+        await carregarProdutosCinema();
+        renderPageTickets();
+    } else {
+        await carregarMoviesDoBanco();
+        renderPageMovie();
+    }
+}, 10000);
 
 function createDiv() {
     const div = document.createElement("div");
