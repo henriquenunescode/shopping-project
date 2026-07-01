@@ -1,29 +1,39 @@
 import {createFormProducts, createFormFuncionario} from "./formToggle.js";
 
-
-let storeID = ""
-let productsID = ""
-let funcionariosID = ""
-
-let storeData = JSON.parse(localStorage.getItem(storeID))
-let products = JSON.parse(localStorage.getItem(productsID))
-let funcionarios = JSON.parse(localStorage.getItem(funcionariosID))
+let storeID = JSON.parse(localStorage.getItem(storeID))
+let products = JSON.parse(localStorage.getItem(products))
+let funcionarios = JSON.parse(localStorage.getItem(funcionarios))
 
 if(!storeData || !products || !funcionarios){
 products = [
-    {name: "Relógio", price: 199.90, reference: "abc123", stock: 50, type: "kids"},
-    {name: "Moletom Preto", price: 299.90, reference: "def456", stock: 100, type: "kids"},
-    {name: "Tênis Nike", price: 149.90, reference: "ghi789", stock: 150, type: "kids"}
+    {name: "Relógio", price: 199.90, reference: "abc123", stock: 50, type: "kids", fStoreID:1},
+    {name: "Moletom Preto", price: 299.90, reference: "def456", stock: 100, type: "kids", fStoreID:2},
+    {name: "Tênis Nike", price: 149.90, reference: "ghi789", stock: 150, type: "kids", fStoreID:3}
 ];
 funcionarios = [
-    {name: "João da Silva", cargo: "Gerente", email: "joao@gmail.com"},
-    {name: "Maria Meirelles", cargo: "Vendedor(a)", email: "maria@gmail.com"}
+    {name: "João da Silva", cargo: "Gerente", email: "joao@gmail.com", fStoreID:1},
+    {name: "Maria Meirelles", cargo: "Vendedor(a)", email: "maria@gmail.com", fStoreID:2}
 ];
 
-
-localStorage.setItem(productsID, JSON.stringify(products));
-localStorage.setItem(funcionariosID, JSON.stringify(funcionarios));
+localStorage.setItem(products, JSON.stringify(products));
+localStorage.setItem(funcionarios, JSON.stringify(funcionarios));
 }
+
+let thisProdutcts = [];
+let thisFuncionarios = [];
+
+products.forEach(prod => {
+   if(prod.fStoreID == storeID){
+    thisProdutcts.push(prod)
+   }  
+});
+
+funcionarios.forEach(func => {
+   if(func.fStoreID == storeID){
+    thisProdutcts.push(func)
+   }  
+});
+
 let backbut = document.querySelector("#voltar")
 
 backbut.addEventListener("click", (e)=>{
