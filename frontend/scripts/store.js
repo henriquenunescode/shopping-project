@@ -5,9 +5,9 @@ let storeID = ""
 let productsID = ""
 let funcionariosID = ""
 
-let storeData = JSON.parse(localStorage.get(storeID))
-let products = JSON.parse(localStorage.get(productsID))
-let funcionarios = JSON.parse(localStorage.get(funcionariosID))
+let storeData = JSON.parse(localStorage.getItem(storeID))
+let products = JSON.parse(localStorage.getItem(productsID))
+let funcionarios = JSON.parse(localStorage.getItem(funcionariosID))
 
 if(!storeData || !products || !funcionarios){
 products = [
@@ -22,8 +22,15 @@ funcionarios = [
 
 
 localStorage.setItem(productsID, JSON.stringify(products));
-localStorage.setItem(funcionariosID, JSON.stringfy(funcionarios));
+localStorage.setItem(funcionariosID, JSON.stringify(funcionarios));
 }
+let backbut = document.querySelector("#voltar")
+
+backbut.addEventListener("click", (e)=>{
+e.preventDefault();
+localStorage.removeItem("storeID")
+window.location.href = "dashboard.html";
+})
 
 
 const linkProducts = document.querySelector("#products");
