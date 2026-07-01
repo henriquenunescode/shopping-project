@@ -1,0 +1,464 @@
+diff -ruN current_patched/backend/prisma/seed.js hotfixed/backend/prisma/seed.js
+--- current_patched/backend/prisma/seed.js	2026-07-01 18:00:08.321562525 +0000
++++ hotfixed/backend/prisma/seed.js	2026-07-01 18:03:42.443342205 +0000
+@@ -71,6 +71,25 @@
+         }
+     })
+ 
++
++    const lojasExtras = [
++        { store_id: 4, nome: "Maison", tipo: "Casa" },
++        { store_id: 5, nome: "Tech Store", tipo: "Tecnologia" },
++        { store_id: 6, nome: "Parfum", tipo: "Beleza" },
++        { store_id: 7, nome: "Studio Wear", tipo: "Moda" }
++    ]
++
++    for (const loja of lojasExtras) {
++        await prisma.stores.upsert({
++            where: { store_id: loja.store_id },
++            update: {
++                nome: loja.nome,
++                tipo: loja.tipo
++            },
++            create: loja
++        })
++    }
++
+     const product = await prisma.products.findFirst({
+         where: {
+             nome: "Camiseta",
+diff -ruN current_patched/frontend/scripts/kids.js hotfixed/frontend/scripts/kids.js
+--- current_patched/frontend/scripts/kids.js	2026-06-29 19:49:42.000000000 +0000
++++ hotfixed/frontend/scripts/kids.js	2026-07-01 18:03:42.442016485 +0000
+@@ -1,5 +1,9 @@
+ import {createFormKids} from "../scripts/formToggle.js";
+ 
++function isGerenteAtual() {
++    return window.isGerente && window.isGerente();
++}
++
+ const toys = [
+     {name: "Ingressos Área Kids", price: 45.00, age: "3-12 anos"},
+     {name: "Pula-pula", price: 15.00, age: "4-10 anos"},
+@@ -7,12 +11,18 @@
+ ];
+ 
+ window.addEventListener("DOMContentLoaded", () => {
+-    divToys();
+-});
++    const button = document.querySelector("#new-item");
+ 
+-const button = document.querySelector("#new-item");
++    if (button) {
++        if (!isGerenteAtual()) {
++            button.style.display = "none";
++        } else {
++            button.addEventListener("click", renderFormKids);
++        }
++    }
+ 
+-button.addEventListener("click", renderFormKids);
++    divToys();
++});
+ 
+ function divToys() {
+     const divGrid = document.querySelector(".grid-kids");
+@@ -39,19 +49,22 @@
+ 
+         divInfoToy.append(h3, p, span, button);
+ 
+-        const divIcon = createDiv();
+-        divIcon.classList.add("icon-remove");
++        divToy.append(divInfoToy);
+ 
+-        const i = createI();
+-        i.className = "ti ti-trash";
+-        i.addEventListener("click", () => {
+-            toys.splice(index, 1);
+-            renderToy();
+-        });
++        if (isGerenteAtual()) {
++            const divIcon = createDiv();
++            divIcon.classList.add("icon-remove");
++
++            const i = createI();
++            i.className = "ti ti-trash";
++            i.addEventListener("click", () => {
++                toys.splice(index, 1);
++                renderToy();
++            });
+ 
+-        divIcon.append(i);
+-
+-        divToy.append(divInfoToy, divIcon);
++            divIcon.append(i);
++            divToy.append(divIcon);
++        }
+ 
+         divGrid.append(divToy);
+ 
+@@ -145,19 +158,22 @@
+ 
+     divInfoToy.append(h3, p, span, button);
+ 
+-    const divIcon = createDiv();
+-    divIcon.classList.add("icon-remove");
++    divToy.append(divInfoToy);
+ 
+-    const i = createI();
+-    i.className = "ti ti-trash";
+-    i.addEventListener("click", () => {
+-        toys.splice(index, 1);
+-        renderToy();
+-    });
++    if (isGerenteAtual()) {
++        const divIcon = createDiv();
++        divIcon.classList.add("icon-remove");
+ 
+-    divIcon.append(i);
++        const i = createI();
++        i.className = "ti ti-trash";
++        i.addEventListener("click", () => {
++            toys.splice(index, 1);
++            renderToy();
++        });
+ 
+-    divToy.append(divInfoToy, divIcon);
++        divIcon.append(i);
++        divToy.append(divIcon);
++    }
+ 
+     return divToy;
+ }
+diff -ruN current_patched/frontend/scripts/restaurante.js hotfixed/frontend/scripts/restaurante.js
+--- current_patched/frontend/scripts/restaurante.js	2026-06-29 19:49:42.000000000 +0000
++++ hotfixed/frontend/scripts/restaurante.js	2026-07-01 18:03:42.442414499 +0000
+@@ -1,5 +1,9 @@
+ import { createFormMenu, createFormChefs } from "../scripts/formToggle.js";
+ 
++function isGerenteAtual() {
++    return window.isGerente && window.isGerente();
++}
++
+ const dishs = [
+     {name: "Risoto de Camarão", category: "Pratos Principais", descrition: "Arroz arbóreo com camarão", price: 68.00},
+     {name: "Peixe Assado", category: "Pratos Principais", descrition: "Assado de peixe com legumes chamuscados", price: 55.00},
+@@ -98,7 +102,12 @@
+     
+     const button = createButton("+ Novo Prato");
+     button.id = "new-dish";
+-    button.addEventListener("click", renderFormMenu);
++
++    if (!isGerenteAtual()) {
++        button.style.display = "none";
++    } else {
++        button.addEventListener("click", renderFormMenu);
++    }
+     
+     div.append(h2, button);
+     
+@@ -159,7 +168,12 @@
+     
+     const button = createButton("+ Novo Chef");
+     button.id = "new-chef";
+-    button.addEventListener("click", renderFormChef);
++
++    if (!isGerenteAtual()) {
++        button.style.display = "none";
++    } else {
++        button.addEventListener("click", renderFormChef);
++    }
+     
+     div.append(h2, button);
+     
+@@ -241,6 +255,7 @@
+ 
+         const divIcon = createDiv();
+         divIcon.classList.add("icon-remove");
++        if (!isGerenteAtual()) divIcon.style.display = "none";
+ 
+         const icon = createI();
+         icon.className = "ti ti-trash";
+@@ -310,6 +325,7 @@
+ 
+     const divIcon = createDiv();
+     divIcon.classList.add("icon-remove");
++        if (!isGerenteAtual()) divIcon.style.display = "none";
+ 
+     const icon = createI();
+     icon.className = "ti ti-trash";
+@@ -348,6 +364,7 @@
+ 
+         const divIcon = createDiv();
+         divIcon.classList.add("icon-remove");
++        if (!isGerenteAtual()) divIcon.style.display = "none";
+ 
+         const icon = createI();
+         icon.className = "ti ti-trash";
+@@ -405,6 +422,7 @@
+ 
+         const divIcon = createDiv();
+         divIcon.classList.add("icon-remove");
++        if (!isGerenteAtual()) divIcon.style.display = "none";
+ 
+         const icon = createI();
+         icon.className = "ti ti-trash";
+diff -ruN current_patched/frontend/scripts/store.js hotfixed/frontend/scripts/store.js
+--- current_patched/frontend/scripts/store.js	2026-07-01 18:00:08.367321006 +0000
++++ hotfixed/frontend/scripts/store.js	2026-07-01 18:03:42.442673544 +0000
+@@ -17,8 +17,12 @@
+ const linkProducts = document.querySelector("#products")
+ const linkFuncionarios = document.querySelector("#funcionarios")
+ 
++function isGerenteAtual() {
++  return window.isGerente && isGerenteAtual()
++}
++
+ window.addEventListener("DOMContentLoaded", () => {
+-  if (!window.isGerente() && linkFuncionarios) {
++  if (!isGerenteAtual() && linkFuncionarios) {
+     linkFuncionarios.style.display = "none"
+   }
+ 
+@@ -32,7 +36,7 @@
+   linkFuncionarios.addEventListener("click", (event) => {
+     event.preventDefault()
+ 
+-    if (!window.isGerente()) {
++    if (!isGerenteAtual()) {
+       alert("Acesso permitido apenas para gerentes")
+       return
+     }
+@@ -64,11 +68,21 @@
+   finalizarCompraBtn.addEventListener("click", finalizarPedido)
+ }
+ 
++document.addEventListener("click", (event) => {
++  if (event.target.closest("#open-cart")) {
++    cartAside.classList.add("active")
++  }
++
++  if (event.target.closest("#close-cart")) {
++    cartAside.classList.remove("active")
++  }
++})
++
+ async function route() {
+   const hash = window.location.hash
+ 
+   if (hash === "#funcionarios") {
+-    if (!window.isGerente()) {
++    if (!isGerenteAtual()) {
+       window.location.hash = "#products"
+       return
+     }
+@@ -148,7 +162,12 @@
+   const h2 = createH2("Funcionários")
+   const button = createButton("+ Novo Funcionário")
+   button.id = "new-funcionario"
+-  button.addEventListener("click", renderFormFuncionario)
++
++  if (!isGerenteAtual()) {
++    button.style.display = "none"
++  } else {
++    button.addEventListener("click", renderFormFuncionario)
++  }
+ 
+   div.append(h2, button)
+ 
+@@ -163,7 +182,7 @@
+   const button = createButton("+ Novo Produto")
+   button.id = "new-product"
+ 
+-  if (!window.isGerente()) {
++  if (!isGerenteAtual()) {
+     button.style.display = "none"
+   }
+ 
+@@ -448,7 +467,7 @@
+   const buttonRemove = createButtonIcon()
+   buttonRemove.classList.add("icon-remove")
+ 
+-  if (!window.isGerente()) {
++  if (!isGerenteAtual()) {
+     buttonRemove.style.display = "none"
+   }
+ 
+diff -ruN current_patched/frontend/styles/dashglobal.css hotfixed/frontend/styles/dashglobal.css
+--- current_patched/frontend/styles/dashglobal.css	2026-07-01 18:00:08.347993865 +0000
++++ hotfixed/frontend/styles/dashglobal.css	2026-07-01 18:03:42.442991387 +0000
+@@ -657,3 +657,35 @@
+ #storeFormContainer button {
+     padding: 10px;
+ }
++
++
++/* HOTFIX: cards dinâmicos das lojas vindos do banco */
++#lojas .stores-card {
++    display: flex;
++    flex-wrap: wrap;
++    justify-content: center;
++    gap: 20px;
++}
++
++#lojas .stores-card .cards {
++    width: 300px;
++    height: 240px;
++    display: flex;
++    align-items: end;
++    padding: 20px;
++    position: relative;
++    cursor: pointer;
++}
++
++#lojas .stores-card .remove-store-btn {
++    position: absolute;
++    top: 10px;
++    right: 10px;
++    width: auto;
++    height: auto;
++    margin: 0;
++    padding: 8px 12px;
++    background-color: #ff5a5f;
++    color: #fff;
++    border: none;
++}
+diff -ruN current_patched/frontend/styles/store.css hotfixed/frontend/styles/store.css
+--- current_patched/frontend/styles/store.css	2026-07-01 14:00:48.000000000 +0000
++++ hotfixed/frontend/styles/store.css	2026-07-01 18:03:42.442829744 +0000
+@@ -521,4 +521,133 @@
+ 
+ .baixo {
+     color: red;
+-}
+\ No newline at end of file
++}
++
++/* HOTFIX: regras diretas para garantir layout mesmo se o nesting do CSS falhar */
++#main-content {
++    padding: 0 24px 40px;
++}
++
++#view-products,
++#section-funcionarios {
++    width: 100%;
++    padding: 32px 0;
++}
++
++#view-products > .title-section,
++#section-funcionarios > .title-section {
++    display: flex;
++    align-items: center;
++    justify-content: space-between;
++    margin-bottom: 24px;
++}
++
++#view-products > .title-section h2,
++#section-funcionarios > .title-section h2 {
++    font-family: "Sparkle Passion";
++    font-size: 42px;
++    font-weight: 400;
++    color: #2c365a;
++}
++
++#view-products > .title-section button,
++#section-funcionarios > .title-section button {
++    width: 220px;
++    padding: 12px;
++    border: none;
++    border-radius: 6px;
++    background-color: #2c365a;
++    color: #fff;
++    font-weight: 700;
++    cursor: pointer;
++}
++
++#view-products .grid-products {
++    margin-top: 24px;
++    display: flex;
++    flex-wrap: wrap;
++    justify-content: center;
++    gap: 24px;
++}
++
++#view-products .grid-products > .product {
++    width: 300px;
++    max-width: 300px;
++    display: flex;
++    flex-direction: column;
++    overflow: hidden;
++    background-color: #fff;
++    border-radius: 10px;
++    border-bottom: 4px solid #2c365a;
++    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
++    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
++}
++
++#view-products .grid-products > .product > img {
++    width: 100%;
++    height: 200px;
++    object-fit: cover;
++}
++
++#view-products .grid-products .info-product {
++    display: flex;
++    flex-direction: column;
++    gap: 8px;
++    padding: 12px 20px;
++}
++
++#view-products .grid-products .info-product h3 {
++    font-size: 20px;
++    font-weight: 600;
++}
++
++#view-products .grid-products .info-product .price {
++    font-size: 20px;
++    text-decoration: underline;
++}
++
++#view-products .grid-products select {
++    width: calc(100% - 40px);
++    height: 35px;
++    margin: 10px 20px 0;
++    padding: 5px;
++}
++
++#view-products .grid-products .buttons {
++    display: flex;
++    justify-content: space-around;
++    gap: 10px;
++    padding: 12px;
++}
++
++#view-products .grid-products .buttons .add {
++    flex: 1;
++    padding: 10px;
++    border-radius: 10px;
++    border: 1px solid #05102d;
++    background-color: #05102d;
++    color: #fff;
++    font-weight: 600;
++    cursor: pointer;
++}
++
++#section-funcionarios .grid-funcionarios {
++    display: flex;
++    flex-direction: column;
++    gap: 20px;
++}
++
++#section-funcionarios .funcionario {
++    display: flex;
++    align-items: center;
++    justify-content: space-between;
++    padding: 20px;
++    background-color: #fff;
++    border-left: 4px solid #05102d;
++    border-radius: 0 10px 10px 0;
++    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
++}
++
++.cart-products.active {
++    right: 0 !important;
++}

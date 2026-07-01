@@ -1,474 +1,502 @@
-import { createFormMenu, createFormChefs } from "../scripts/formToggle.js";
+import { createFormMenu, createFormChefs } from "../scripts/formToggle.js"
 
-const dishs = [
-    {name: "Risoto de Camarão", category: "Pratos Principais", descrition: "Arroz arbóreo com camarão", price: 68.00},
-    {name: "Peixe Assado", category: "Pratos Principais", descrition: "Assado de peixe com legumes chamuscados", price: 55.00},
-    {name: "Tiramisù", category: "Sobremesas", descrition: "Sobremesa italiana clássica", price: 28.00}
-];
+const RESTAURANTE_NOME = "Lem' Mar"
 
-const chefs = [
-    {name: "Antônio Rossi", especialidade: "Cozinha Italiana"},
-    {name: "Maria Dubois", especialidade: "Cozinha Francesa"},
-];
+let restauranteStore = null
+let dishs = []
+let chefs = []
 
-const linkMenu = document.querySelector("#menu");
+const linkMenu = document.querySelector("#menu")
+const linkChefs = document.querySelector("#chefs")
+const main = document.querySelector("#main-content")
 
-const linkChefs = document.querySelector("#chefs");
+function isGerenteAtual() {
+    return window.isGerente && window.isGerente()
+}
+
+window.addEventListener("DOMContentLoaded", async () => {
+    await carregarDadosRestaurante()
+    route()
+})
+
+window.addEventListener("hashchange", route)
+
+if (linkMenu) {
+    linkMenu.addEventListener("click", (event) => {
+        event.preventDefault()
+        window.location.hash = "#menu"
+    })
+}
+
+if (linkChefs) {
+    linkChefs.addEventListener("click", (event) => {
+        event.preventDefault()
+        window.location.hash = "#chefs"
+    })
+}
 
 function route() {
-    const hash = window.location.hash;
+    const hash = window.location.hash
 
-    if(hash == "#chefs") {
-        renderPageChefs();
+    if (hash === "#chefs") {
+        renderPageChefs()
     } else {
-        renderPageMenu();
-        window.location.hash = "#menu";
+        renderPageMenu()
+        window.location.hash = "#menu"
     }
 }
 
-window.addEventListener("DOMContentLoaded", route);
+async function carregarDadosRestaurante() {
+    try {
+        const stores = await window.apiRequest("/stores")
 
-window.addEventListener("hashchange", route);
+        restauranteStore = stores.find((store) => {
+            return store.nome === RESTAURANTE_NOME
+        })
 
-linkMenu.addEventListener("click", (event) => {
-    event.preventDefault();
+        if (!restauranteStore) {
+            alert("Loja Lem' Mar não encontrada no banco.")
+            return
+        }
 
-    window.location.hash = "#menu";
-});
+        const products = await window.apiRequest("/products")
 
-function renderPageMenu() {
-    const main = document.querySelector("#main-content");
-    
-    main.replaceChildren();
-    
-    main.append(sectionMenu());
+        dishs = products
+            .filter((product) => product.store_fk === restauranteStore.store_id)
+            .map((product) => {
+                return {
+                    product_id: product.product_id,
+                    name: product.nome,
+                    price: Number(product.preco),
+                    descrition: product.descricao || "Prato do restaurante",
+                    category: product.categoria || "Pratos",
+                    store_fk: product.store_fk,
+                    estoque: product.estoque
+                }
+            })
+
+        const workers = await window.apiRequest("/workers")
+
+        chefs = workers
+            .filter((worker) => worker.store_fk === restauranteStore.store_id)
+            .map((worker) => {
+                return {
+                    worker_id: worker.worker_id,
+                    name: worker.nome,
+                    especialidade: worker.tipo
+                }
+            })
+    } catch (error) {
+        alert(error.message)
+    }
 }
 
-linkChefs.addEventListener("click", (event) => {
-    event.preventDefault();
-    
-    window.location.hash = "#chefs";
-});
+function renderPageMenu() {
+    main.replaceChildren()
+    main.append(sectionMenu())
+}
 
 function renderPageChefs() {
-    const main = document.querySelector("#main-content");
-    
-    main.replaceChildren();
-    
-    main.append(sectionChefs());
+    main.replaceChildren()
+    main.append(sectionChefs())
 }
 
 function sectionMenu() {
-    const section = document.createElement("section");
-    section.id = "section-menu";
+    const section = createDiv()
+    section.id = "section-menu"
 
-    const div = createDiv();
-    div.id = "container";
+    const div = createDiv()
+    div.id = "container"
 
-    const title = divTitleMenu();
+    const title = divTitleMenu()
+    const content = divDishs()
 
-    const content = divDishs();
+    section.append(title, div, content)
 
-    section.append(title, div, content);
-
-    return section;
+    return section
 }
 
 function sectionChefs() {
-    const section = document.createElement("section");
-    section.id = "section-chefs";
+    const section = createDiv()
+    section.id = "section-chefs"
 
-    const div = createDiv();
-    div.id = "container";
-    
-    const title = divTitleChefs();
+    const div = createDiv()
+    div.id = "container"
 
-    const content = divChefs();
-    
-    section.append(title, div, content);
-    
-    return section;
+    const title = divTitleChefs()
+    const content = divChefs()
+
+    section.append(title, div, content)
+
+    return section
 }
 
 function divTitleMenu() {
-    const div = createDiv();
-    div.classList.add("title-section");
-    
-    const h2 = createH2("Menu");
-    
-    const button = createButton("+ Novo Prato");
-    button.id = "new-dish";
-    button.addEventListener("click", renderFormMenu);
-    
-    div.append(h2, button);
-    
-    return div;
+    const div = createDiv()
+    div.classList.add("title-section")
+
+    const h2 = createH2("Menu")
+
+    const button = createButton("+ Novo Prato")
+    button.id = "new-dish"
+
+    if (!isGerenteAtual()) {
+        button.style.display = "none"
+    } else {
+        button.addEventListener("click", renderFormMenu)
+    }
+
+    div.append(h2, button)
+
+    return div
 }
 
 function renderFormMenu() {
-    const divContainer = document.querySelector("#container");
-    
-    divContainer.replaceChildren();
-    
-    divContainer.append(createFormMenu());
+    const divContainer = document.querySelector("#container")
 
-    submitMenu();
+    divContainer.replaceChildren()
+    divContainer.append(createFormMenu())
 
+    submitMenu()
 }
 
 function submitMenu() {
-    const formMenu = document.querySelector("#form-menu");
+    const formMenu = document.querySelector("#form-menu")
 
-    formMenu.addEventListener("submit", (event) => {
-        event.preventDefault();
+    formMenu.addEventListener("submit", async (event) => {
+        event.preventDefault()
 
-        const dados = getDishs(formMenu);
+        const dados = getDishs(formMenu)
 
-        const name = dados.name;
-        const price = dados.price;
-        const descrition = dados.descrition;
-        const category = dados.category;
+        const name = dados.name
+        const price = dados.price
+        const descrition = dados.descrition
+        const category = dados.category
 
         if (!name || !price || !descrition || !category) {
-            alert("Preencha os campos corretamente!");
-            return;
+            alert("Preencha os campos corretamente!")
+            return
         }
 
-        const dish = {
-            name,
-            price,
-            descrition,
-            category
-        };
+        try {
+            await window.apiRequest("/products", {
+                method: "POST",
+                body: JSON.stringify({
+                    store_fk: restauranteStore.store_id,
+                    nome: name,
+                    preco: price,
+                    estoque: 100,
+                    descricao: descrition,
+                    categoria: category
+                })
+            })
 
-        dishs.push(dish);
+            await carregarDadosRestaurante()
+            renderDishs()
 
-        renderDishs();
-
-        formMenu.reset();
-
-        document.querySelector("input[name= 'name']").focus();
-    });
+            formMenu.reset()
+            document.querySelector("input[name='name']").focus()
+        } catch (error) {
+            alert(error.message)
+        }
+    })
 }
 
 function divTitleChefs() {
-    const div = createDiv();
-    div.classList.add("title-section");
-    
-    const h2 = createH2("Chefs");
-    
-    const button = createButton("+ Novo Chef");
-    button.id = "new-chef";
-    button.addEventListener("click", renderFormChef);
-    
-    div.append(h2, button);
-    
-    return div;
+    const div = createDiv()
+    div.classList.add("title-section")
+
+    const h2 = createH2("Chefs")
+
+    const button = createButton("+ Novo Chef")
+    button.id = "new-chef"
+
+    if (!isGerenteAtual()) {
+        button.style.display = "none"
+    } else {
+        button.addEventListener("click", renderFormChef)
+    }
+
+    div.append(h2, button)
+
+    return div
 }
 
 function renderFormChef() {
-    const divContainer = document.querySelector("#container");
-    
-    divContainer.replaceChildren();
-    
-    divContainer.append(createFormChefs());
+    const divContainer = document.querySelector("#container")
 
-    submitFormChef();
+    divContainer.replaceChildren()
+    divContainer.append(createFormChefs())
 
-} 
-
-function submitFormChef() {
-    const formChefs = document.querySelector("#form-chefs");
-    
-    formChefs.addEventListener("submit", (event) => {
-        event.preventDefault();
-    
-        const dados = getChefs(formChefs);
-    
-        const name = dados.name;
-        const especialidade = dados.especialidade;
-    
-        if (!name || !especialidade) {
-            alert("Preencha todos os campos corretamente!");
-            return;
-        }
-    
-        const chef = {
-            name,
-            especialidade
-        };
-    
-        chefs.push(chef);
-    
-        renderChef();
-    
-        formChefs.reset();
-    
-        document.querySelector("input[name= 'name']").focus();
-    });
+    submitFormChef()
 }
 
+function submitFormChef() {
+    const formChefs = document.querySelector("#form-chefs")
+
+    formChefs.addEventListener("submit", async (event) => {
+        event.preventDefault()
+
+        const dados = getChefs(formChefs)
+
+        const name = dados.name
+        const especialidade = dados.especialidade
+
+        if (!name || !especialidade) {
+            alert("Preencha todos os campos corretamente!")
+            return
+        }
+
+        try {
+            await window.apiRequest("/workers", {
+                method: "POST",
+                body: JSON.stringify({
+                    nome: name,
+                    tipo: especialidade,
+                    store_fk: restauranteStore.store_id
+                })
+            })
+
+            await carregarDadosRestaurante()
+            renderChef()
+
+            formChefs.reset()
+            document.querySelector("input[name='name']").focus()
+        } catch (error) {
+            alert(error.message)
+        }
+    })
+}
 
 function divDishs() {
-    const divGrid = createDiv();
-    divGrid.classList.add("grid-pratos");
+    const divGrid = createDiv()
+    divGrid.classList.add("grid-pratos")
 
-    dishs.forEach((prato, index) => {
-    
-        const divPratos = createDiv();
-        divPratos.classList.add("pratos");
+    if (dishs.length === 0) {
+        divGrid.innerHTML = `<p>Nenhum prato cadastrado.</p>`
+        return divGrid
+    }
 
-        const divContainer = createDiv();
-        divContainer.classList.add("info-prato");
+    dishs.forEach((prato) => {
+        const dish = newDish(prato)
+        divGrid.appendChild(dish)
+    })
 
-        const divTitle = createDiv();
-        divTitle.classList.add("name-category");
+    return divGrid
+}
 
-        const h3 = createH3(prato.name);
-        const span = createSpan(prato.category.toUpperCase());
-        divTitle.append(h3, span);
+function newDish(prato) {
+    const divPratos = createDiv()
+    divPratos.classList.add("pratos")
 
-        const pDescrition = createP(prato.descrition);
-        pDescrition.classList.add("descrition");
+    const divContainer = createDiv()
+    divContainer.classList.add("info-prato")
 
-        const pPrice = createP(prato.price.toLocaleString("pt-BR", {
-            style: "currency",
-            currency: "BRL"
-        }));
-        pPrice.classList.add("price");
+    const divTitle = createDiv()
+    divTitle.classList.add("name-category")
 
-        divContainer.append(divTitle, pDescrition, pPrice);
+    const h3 = createH3(prato.name)
+    const span = createSpan(prato.category.toUpperCase())
 
-        const divIcon = createDiv();
-        divIcon.classList.add("icon-remove");
+    divTitle.append(h3, span)
 
-        const icon = createI();
-        icon.className = "ti ti-trash";
-        icon.addEventListener("click", () => {
-            dishs.splice(index, 1);
-            renderDishs();
-        });
+    const pDescrition = createP(prato.descrition)
+    pDescrition.classList.add("descrition")
 
-        divIcon.append(icon);
-    
-        divPratos.append(divContainer, divIcon);
-    
-        divGrid.append(divPratos);
-    });
+    const pPrice = createP(prato.price.toLocaleString("pt-BR", {
+        style: "currency",
+        currency: "BRL"
+    }))
+    pPrice.classList.add("price")
 
-    return divGrid;
+    divContainer.append(divTitle, pDescrition, pPrice)
 
+    const divIcon = createDiv()
+    divIcon.classList.add("icon-remove")
+
+    if (!isGerenteAtual()) {
+        divIcon.style.display = "none"
+    }
+
+    const icon = createI()
+    icon.className = "ti ti-trash"
+
+    icon.addEventListener("click", async () => {
+        const confirmar = confirm("Tem certeza que deseja remover este prato?")
+        if (!confirmar) return
+
+        try {
+            await window.apiRequest(`/products/${prato.product_id}`, {
+                method: "DELETE"
+            })
+
+            await carregarDadosRestaurante()
+            renderDishs()
+        } catch (error) {
+            alert(error.message)
+        }
+    })
+
+    divIcon.append(icon)
+    divPratos.append(divContainer, divIcon)
+
+    return divPratos
 }
 
 function getDishs(form) {
-    const dados = new FormData(form);
+    const dados = new FormData(form)
 
-    const name = dados.get("name");
-    const price = parseFloat(dados.get("price"));
-    const descrition = dados.get("descrition");
-    const category = dados.get("category");
+    const name = dados.get("name")
+    const price = parseFloat(dados.get("price"))
+    const descrition = dados.get("descrition")
+    const category = dados.get("category")
 
-    return {name, price, descrition, category};
+    return { name, price, descrition, category }
 }
 
 function renderDishs() {
-    const divGrid = document.querySelector(".grid-pratos");
+    const divGrid = document.querySelector(".grid-pratos")
 
-    divGrid.replaceChildren();
+    if (!divGrid) return
 
-    dishs.forEach((prato, index) => {
-        const dish = newDish(prato, index);
+    divGrid.replaceChildren()
 
-        divGrid.appendChild(dish);
-    });
-}
+    if (dishs.length === 0) {
+        divGrid.innerHTML = `<p>Nenhum prato cadastrado.</p>`
+        return
+    }
 
-function newDish(prato, index) {
-    const divPratos = createDiv();
-    divPratos.classList.add("pratos");
-
-    const divContainer = createDiv();
-    divContainer.classList.add("info-prato");
-
-    const divTitle = createDiv();
-    divTitle.classList.add("name-category");
-
-    const h3 = createH3(prato.name);
-    const span = createSpan(prato.category.toUpperCase());
-    divTitle.append(h3, span);
-
-    const pDescrition = createP(prato.descrition);
-    pDescrition.classList.add("descrition");
-
-    const pPrice = createP(prato.price.toLocaleString("pt-BR", {
-    style: "currency",
-        currency: "BRL"
-    }));
-    pPrice.classList.add("price");
-
-    divContainer.append(divTitle, pDescrition, pPrice);
-
-    const divIcon = createDiv();
-    divIcon.classList.add("icon-remove");
-
-    const icon = createI();
-    icon.className = "ti ti-trash";
-    icon.addEventListener("click", () => {
-        dishs.splice(index, 1);
-        renderDishs();
-    });
-
-    divIcon.append(icon);
-    
-    divPratos.append(divContainer, divIcon);
-
-    return divPratos;
-
+    dishs.forEach((prato) => {
+        const dish = newDish(prato)
+        divGrid.appendChild(dish)
+    })
 }
 
 function divChefs() {
-    const divGrid = createDiv();
-    divGrid.classList.add("grid-chefs");
+    const divGrid = createDiv()
+    divGrid.classList.add("grid-chefs")
 
-    chefs.forEach((chef, index) => {
-    
-        const divChefs = createDiv();
-        divChefs.classList.add("chefs");
+    if (chefs.length === 0) {
+        divGrid.innerHTML = `<p>Nenhum chef cadastrado.</p>`
+        return divGrid
+    }
 
-        const divInfoChefs = createDiv();
-        divInfoChefs.classList.add("info-chefs");
+    chefs.forEach((chef) => {
+        const divChef = newChef(chef)
+        divGrid.appendChild(divChef)
+    })
 
-        const i = createI();
-        i.className = "ti ti-chef-hat";
-
-        const h3 = createH3(chef.name);
-
-        const span = createSpan(chef.especialidade);
-        divInfoChefs.append(i, h3, span);
-
-        const divIcon = createDiv();
-        divIcon.classList.add("icon-remove");
-
-        const icon = createI();
-        icon.className = "ti ti-trash";
-        icon.addEventListener("click", () => {
-            chefs.splice(index, 1);
-            renderChef();
-        });
-
-        divIcon.append(icon);
-    
-        divChefs.append(divInfoChefs, divIcon);
-    
-        divGrid.append(divChefs);
-    });
-
-    return divGrid;
-
+    return divGrid
 }
 
-export function getChefs(form) {
-    const dados = new FormData(form);
+function getChefs(form) {
+    const dados = new FormData(form)
 
-    const name = dados.get("name");
-    const especialidade = dados.get("especialidade");
+    const name = dados.get("name")
+    const especialidade = dados.get("especialidade")
 
-    return {name, especialidade};
+    return { name, especialidade }
 }
 
-export function renderChef() {
-    const divGrid = document.querySelector(".grid-chefs");
+function renderChef() {
+    const divGrid = document.querySelector(".grid-chefs")
 
-    divGrid.replaceChildren();
+    if (!divGrid) return
 
-    chefs.forEach((chef, index) => {
-        const divChef = newChef(chef, index);
+    divGrid.replaceChildren()
 
-        divGrid.appendChild(divChef);
-    });
+    if (chefs.length === 0) {
+        divGrid.innerHTML = `<p>Nenhum chef cadastrado.</p>`
+        return
+    }
+
+    chefs.forEach((chef) => {
+        const divChef = newChef(chef)
+        divGrid.appendChild(divChef)
+    })
 }
 
-export function newChef(chef, index) {
-    const divChefs = createDiv();
-        divChefs.classList.add("chefs");
+function newChef(chef) {
+    const divChefs = createDiv()
+    divChefs.classList.add("chefs")
 
-        const divInfoChefs = createDiv();
-        divInfoChefs.classList.add("info-chefs");
+    const divInfoChefs = createDiv()
+    divInfoChefs.classList.add("info-chefs")
 
-        const i = createI();
-        i.className = "ti ti-chef-hat";
+    const i = createI()
+    i.className = "ti ti-chef-hat"
 
-        const h3 = createH3(chef.name);
+    const h3 = createH3(chef.name)
+    const span = createSpan(chef.especialidade)
 
-        const span = createSpan(chef.especialidade);
-        divInfoChefs.append(i, h3, span);
+    divInfoChefs.append(i, h3, span)
 
-        const divIcon = createDiv();
-        divIcon.classList.add("icon-remove");
+    const divIcon = createDiv()
+    divIcon.classList.add("icon-remove")
 
-        const icon = createI();
-        icon.className = "ti ti-trash";
-        icon.addEventListener("click", () => {
-            chefs.splice(index, 1);
-            
-            renderChef();
-        });
+    if (!isGerenteAtual()) {
+        divIcon.style.display = "none"
+    }
 
-        divIcon.append(icon);
-    
-        divChefs.append(divInfoChefs, divIcon);
+    const icon = createI()
+    icon.className = "ti ti-trash"
 
-        return divChefs;
+    icon.addEventListener("click", async () => {
+        const confirmar = confirm("Tem certeza que deseja remover este chef?")
+        if (!confirmar) return
+
+        try {
+            await window.apiRequest(`/workers/${chef.worker_id}`, {
+                method: "DELETE"
+            })
+
+            await carregarDadosRestaurante()
+            renderChef()
+        } catch (error) {
+            alert(error.message)
+        }
+    })
+
+    divIcon.append(icon)
+    divChefs.append(divInfoChefs, divIcon)
+
+    return divChefs
 }
 
 function createDiv() {
-    const div = document.createElement("div");
-
-    return div;
+    return document.createElement("div")
 }
 
 function createH2(text) {
-    const h2 = document.createElement("h2");
-
-    h2.textContent = text;
-
-    return h2;
+    const h2 = document.createElement("h2")
+    h2.textContent = text
+    return h2
 }
 
 function createButton(text) {
-    const button = document.createElement("button");
-
-    button.textContent = text;
-
-    return button;
+    const button = document.createElement("button")
+    button.textContent = text
+    return button
 }
 
 function createH3(text) {
-    const h3 = document.createElement("h3");
-
-    h3.textContent = text;
-
-    return h3;
+    const h3 = document.createElement("h3")
+    h3.textContent = text
+    return h3
 }
 
 function createSpan(text) {
-    const span = document.createElement("span");
-
-    span.textContent = text;
-
-    return span;
+    const span = document.createElement("span")
+    span.textContent = text
+    return span
 }
 
 function createP(text) {
-    const p = document.createElement("p");
-
-    p.textContent = text;
-
-    return p;
+    const p = document.createElement("p")
+    p.textContent = text
+    return p
 }
 
 function createI() {
-    const i = document.createElement("i");
-
-    return i;
+    return document.createElement("i")
 }

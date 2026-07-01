@@ -6,7 +6,9 @@ async function create(data) {
       store_fk: Number(data.store_fk),
       nome: data.nome,
       preco: Number(data.preco),
-      estoque: Number(data.estoque)
+      estoque: Number(data.estoque),
+      descricao: data.descricao,
+      categoria: data.categoria
     }
   })
 }
@@ -39,11 +41,12 @@ async function update(id, data) {
       ...(data.store_fk !== undefined && { store_fk: Number(data.store_fk) }),
       ...(data.nome !== undefined && { nome: data.nome }),
       ...(data.preco !== undefined && { preco: Number(data.preco) }),
-      ...(data.estoque !== undefined && { estoque: Number(data.estoque) })
+      ...(data.estoque !== undefined && { estoque: Number(data.estoque) }),
+      ...(data.descricao !== undefined && { descricao: data.descricao }),
+      ...(data.categoria !== undefined && { categoria: data.categoria })
     }
   })
 }
-
 async function remove(id) {
   return prisma.products.delete({
     where: {

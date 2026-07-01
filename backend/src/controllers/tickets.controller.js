@@ -2,7 +2,10 @@ const ticketsService = require("../services/tickets.service")
 
 async function create(req, res, next) {
   try {
-    const ticket = await ticketsService.create(req.body)
+    const ticket = await ticketsService.create({
+      ...req.body,
+      user_fk: req.user.user_id
+    })
     res.status(201).json(ticket)
   } catch (err) {
     next(err)

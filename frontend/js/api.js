@@ -9,6 +9,11 @@ function getUser() {
   return user ? JSON.parse(user) : null
 }
 
+function isGerente() {
+  const user = getUser()
+  return user && user.tipo === "ADMIN"
+}
+
 async function apiRequest(endpoint, options = {}) {
   const token = getToken()
 
@@ -38,3 +43,4 @@ async function apiRequest(endpoint, options = {}) {
 window.apiRequest = apiRequest
 window.getToken = getToken
 window.getUser = getUser
+window.isGerente = isGerente

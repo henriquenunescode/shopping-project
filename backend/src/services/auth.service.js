@@ -38,7 +38,8 @@ async function register(data) {
     data: {
       nome: data.nome,
       email: data.email,
-      senha: hashedPassword
+      senha: hashedPassword,
+      tipo: "USER"
     }
   })
 
@@ -75,7 +76,8 @@ async function login(data) {
   const token = jwt.sign(
     {
       user_id: user.user_id,
-      email: user.email
+      email: user.email,
+      tipo: user.tipo
     },
     process.env.JWT_SECRET,
     {

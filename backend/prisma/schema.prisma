@@ -74,6 +74,8 @@ model products {
   nome       String  @db.VarChar(50)
   preco      Decimal @db.Decimal(10, 2)
   estoque    Int
+  descricao String? @db.VarChar(255)
+  categoria String? @db.VarChar(50)
 
   // Relações
   store stores @relation(fields: [store_fk], references: [store_id])

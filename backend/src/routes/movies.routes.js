@@ -1,13 +1,15 @@
 const express = require("express")
+const moviesController = require("../controllers/movies.controller")
+const authMiddleware = require("../middlewares/auth.middleware")
+const gerenteMiddleware = require("../middlewares/gerente.middleware")
 
 const router = express.Router()
 
-const moviesController = require("../controllers/movies.controller")
-
-router.post("/", moviesController.create)
 router.get("/", moviesController.findAll)
 router.get("/:id", moviesController.findById)
-router.put("/:id", moviesController.update)
-router.delete("/:id", moviesController.remove)
+
+router.post("/", authMiddleware, gerenteMiddleware, moviesController.create)
+router.put("/:id", authMiddleware, gerenteMiddleware, moviesController.update)
+router.delete("/:id", authMiddleware, gerenteMiddleware, moviesController.remove)
 
 module.exports = router

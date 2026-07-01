@@ -122,14 +122,59 @@ async function main() {
             email: "joao@gmail.com"
         },
         update: {
-            nome: "Joao"
+            nome: "Joao",
+            tipo: "USER"
         },
         create: {
             nome: "Joao",
             email: "joao@gmail.com",
-            senha: hashedPassword
+            senha: hashedPassword,
+            tipo: "USER"
         }
     })
+
+    const adminPassword = await bcrypt.hash("123456", 10)
+
+    await prisma.users.upsert({
+        where: {
+            email: "gerente@geneva.com"
+        },
+        update: {
+            nome: "Gerente",
+            tipo: "ADMIN"
+        },
+        create: {
+            nome: "Gerente",
+            email: "gerente@geneva.com",
+            senha: adminPassword,
+            tipo: "ADMIN"
+        }
+    })
+
+    let restauranteStore = await prisma.stores.findFirst({
+        where: {
+            nome: "Lem' Mar"
+        }
+    })
+
+    if (restauranteStore) {
+        restauranteStore = await prisma.stores.update({
+            where: {
+                store_id: restauranteStore.store_id
+            },
+            data: {
+                nome: "Lem' Mar",
+                tipo: "Gastronomia"
+            }
+        })
+    } else {
+        restauranteStore = await prisma.stores.create({
+            data: {
+                nome: "Lem' Mar",
+                tipo: "Gastronomia"
+            }
+        })
+    }
 }
 
 main()
