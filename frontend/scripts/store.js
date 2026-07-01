@@ -1,5 +1,6 @@
 import {createFormProducts, createFormFuncionario} from "./formToggle.js";
 
+
 let storeID = ""
 let productsID = ""
 let funcionariosID = ""

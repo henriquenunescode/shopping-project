@@ -7,10 +7,10 @@
     <link rel="stylesheet" href="../styles/global.css">
     <link rel="stylesheet" href="../styles/dashglobal.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
-    <script src="../scripts/dashboard.js" defer></script>
+    <script type="module" src="../scripts/dashboard.js" defer></script>
 </head>
 <body>
-    <header>
+    <header> 
         <div id="title">
             <i class="ti ti-focus"></i>
             <h2>GEN-EVA <span>SHOPPING</span></h2>
@@ -20,8 +20,8 @@
             <form>
                 <input type="search" placeholder="Buscar lojas, produtos...">
             </form>
-            <a href="../index.html"><i class="ti ti-home home-logout"></i></a>
-            <a href="login.html"><i class="ti ti-logout home-logout"></i></a>
+            <a href="../index.html"><i class="ti ti-home home-logout" id="homeBut"></i></a>
+            <a href="login.html"><i class="ti ti-logout home-logout" id="logBut"></i></a>
         </div>
     </header>
     <nav>
@@ -41,62 +41,8 @@
             <h2>Nossas Lojas</h2>
             <div class="store">
                 <div class="stores-card">
-                    <div id="img-boutique" class="cards">
-                        <div>
-                            <span>MODA</span>
-                            <h3>Boutique Élite</h3>
-                        </div>
-                        <div class="button-remove">
-                            <i class="ti ti-trash"></i>
-                        </div>
-                    </div>
-                    <div id="img-casa" class="cards">
-                        <div>
-                            <span>CASA</span>
-                            <h3>Maison Decor</h3>
-                        </div>
-                        <div class="button-remove">
-                            <i class="ti ti-trash"></i>
-                        </div>
-                    </div>
-                    <div id="img-moda" class="cards">
-                        <div>
-                            <span>MODA</span>
-                            <h3>Studio Wear</h3>
-                        </div>
-                        <div class="button-remove">
-                            <i class="ti ti-trash"></i>
-                        </div>
-                    </div>
-                    <div id="img-atelie" class="cards">
-                        <div>
-                            <span>CASA</span>
-                            <h3>Atelier Casa</h3>
-                        </div>
-                        <div class="button-remove">
-                            <i class="ti ti-trash"></i>
-                        </div>
-                    </div>
-                    <div id="img-tech" class="cards">
-                        <div>
-                            <span>TECNOLOGIA</span>
-                            <h3>Tech Lounge</h3>
-                        </div>
-                        <div class="button-remove">
-                            <i class="ti ti-trash"></i>
-                        </div>
-                    </div>
-                    <div id="img-parfum" class="cards">
-                        <div>
-                            <span>BELEZA</span>
-                            <h3>Le Parfum</h3>
-                        </div>
-                        <div class="button-remove">
-                            <i class="ti ti-trash"></i>
-                        </div>
-                    </div>
                 </div>
-                <button>+ ADICIONAR NOVA LOJA</button>
+                <button id="addBut">+ ADICIONAR NOVA LOJA</button>
             </div>
         </section>
         <section id="alimentacao">

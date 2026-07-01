@@ -1,11 +1,11 @@
 @font-face {
     font-family: 'Vogue';
-    src: url(../assets/font/vogue/Vogue.ttf) format(truetype);
+    src: url(../assets/fonts/vogue/Vogue.ttf) format(truetype);
 }
 
 @font-face {
     font-family: 'Sparkle Passion';
-    src: url(../assets/font/sparkle_passion/Sparkle\ Passion.ttf) format(truetype);
+    src: url(../assets/fonts/sparkle_passion/Sparkle\ Passion.ttf) format(truetype);
 }
 
 body {

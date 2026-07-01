@@ -18,8 +18,8 @@ let users = JSON.parse(localStorage.getItem("users"));
 
 if (!users) {
     users = [
-        { name: "admin", password: await hashSenha("admin1234"), type: "admin" },
-        { name: "user", password: await hashSenha("1234"), type: "user" }
+        { name: "admin", email:"admin@gmail.com", password: await hashSenha("admin1234"), type: "admin" },
+        { name: "user", email:"user@gmail.com", password: await hashSenha("1234"), type: "user" }
     ]
     localStorage.setItem("users", JSON.stringify(users))
 }
@@ -28,17 +28,17 @@ if (!users) {
 
 form.addEventListener("submit", async (e) => {
     e.preventDefault();
-    let formdata = new formData(form);
+    let formdata = new FormData(form);
 
-    let formName = formdata.get("name")
-    if (!formName) { alert("usuário não infomado"); return }
+    let formemail = formdata.get("email")
+    if (!formemail) { alert("usuário não infomado"); return }
 
     let formPassword = formdata.get("password")
     if (!formPassword) { alert("Senha não informada"); return }
 
     let hashPassword = await hashSenha(formPassword);
 
-    let LogedUser = users.find(user => user.name == formName && user.password == hashPassword)
+    let LogedUser = users.find(user => user.email == formemail && user.password == hashPassword)
 
     if (LogedUser) {
         localStorage.setItem("LogedUser", JSON.stringify(LogedUser));
@@ -46,8 +46,7 @@ form.addEventListener("submit", async (e) => {
     }
     else {
         alert("Usuario ou Senha incorretos");
-
-        return
+        return;
     }
 
 })

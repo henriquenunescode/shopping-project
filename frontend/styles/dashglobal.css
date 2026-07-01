@@ -544,3 +544,7 @@ footer {
         color: #e5e5e5;
     }
 }
+
+.userNoShow{
+    display: none;
+}

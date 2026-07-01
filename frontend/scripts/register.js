@@ -12,24 +12,29 @@ async function hashSenha(password) {
     //transfoma o array de hash, transfoma em hexadecimal, aruma problemas com bytes unicos, e uni em uma string
 }
 
+        localStorage.setItem("LogedUser", JSON.stringify());
+
 let form = document.querySelector("#form")
 
 let users = JSON.parse(localStorage.getItem("users"));
 
 if (!users) {
     users = [
-        { name: "admin", password: await hashSenha("admin1234"), type: "admin" },
-        { name: "user", password: await hashSenha("1234"), type: "user" }
+        { name: "admin", email:"admin@gmail.com", password: await hashSenha("admin1234"), type: "admin" },
+        { name: "user", email:"admin@gmail.com", password: await hashSenha("1234"), type: "user" }
     ]
     localStorage.setItem("users", JSON.stringify(users))
 }
 
 form.addEventListener("submit", async (e) => {
     e.preventDefault();
-    let formdata = new formData(form);
+    let formdata = new FormData(form);
 
     let formName = formdata.get("name")
     if (!formName) { alert("usuário não infomado"); return }
+
+    let formEmail = formdata.get("email")
+    if(!formEmail){alert("Email não informado"); return;}
 
     let formPassword = formdata.get("password")
     if (!formPassword) { alert("Senha não informada"); return }
@@ -38,13 +43,21 @@ form.addEventListener("submit", async (e) => {
 
     let newUser = {
         name: formName,
+        email:formEmail,
         password: hashPassword,
         type: "user"
     }
 
+    if(!users.find(user => user.email == formEmail)){
     users.push(newUser);
 
     localStorage.setItem("users", JSON.stringify(users))
-
+    window.location.href = "../pages/login.html";
+}
+else{
+    alert("usuário já cadastrado")
+    form.reset();
+    return;
+}
 })
 
