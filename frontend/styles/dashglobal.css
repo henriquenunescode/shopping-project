@@ -52,32 +52,6 @@ header {
         align-items: center;
         gap: 8px;
 
-        i {
-            color: #fdfcf8;
-        }
-
-        input {
-            width: 300px;
-            padding: 10px 20px;
-            margin-right: 20px;
-            background-color: #eee8df;
-            border: 1px solid #eee8df;
-            border-radius: 10px;
-            color: #000;
-
-            &::placeholder {
-                color: #5c5c5c;
-            }
-
-            &::-webkit-search-cancel-button {
-                appearance: none;
-            }
-
-            &:focus {
-                outline: none;
-            }
-        }
-
         a {
             text-decoration: none;
             font-size: 25px;
@@ -163,6 +137,7 @@ nav {
 
 main {
     padding: 80px 40px 0;
+    margin-bottom: 120px;
 
     section {
         scroll-margin-top: 110px;
@@ -258,12 +233,6 @@ main {
 
             #img-moda {
                 background-image: url(../assets/images/studio_wear.jpg);
-                background-size: cover;
-                background-position: center;
-            }
-
-            #img-atelie {
-                background-image: url(../assets/images/atelier_casa.jpg);
                 background-size: cover;
                 background-position: center;
             }

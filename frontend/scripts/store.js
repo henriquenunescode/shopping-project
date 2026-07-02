@@ -396,7 +396,7 @@ function newProduct(product) {
   divProduct.classList.add("product")
 
   const img = document.createElement("img")
-  img.src = "../assets/images/kids.jpg"
+  img.src = "../assets/images/" + product.type.toLowerCase() + ".jpg"
   img.alt = product.nome
 
   const divInfoProduct = createDiv()

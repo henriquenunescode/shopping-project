@@ -145,7 +145,7 @@ function renderLojas(stores) {
 
     card.innerHTML = `
       <div>
-        <span>${store.tipo}</span>
+        <span>${store.tipo.toUpperCase()}</span>
         <h3>${store.nome}</h3>
       </div>
     `

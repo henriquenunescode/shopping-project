@@ -125,7 +125,7 @@ export function createFormProducts() {
 
     const fieldStock = createInput("number", "stock", "Estoque");
 
-    const fieldSelect = createSelect("type", "type", ["kids"]);
+    const fieldSelect = createSelect("type", "type", ["Selecionar tipo", "Camisa", "Calça", "Tenis", "Moletom"]);
 
     const button = createButton("ADICIONAR");
 

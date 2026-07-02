@@ -166,20 +166,6 @@ main {
             background-position: center;
             margin-bottom: 10px;
         }
-
-        #img-casa {
-            background-image: url(../assets/images/maison.jpg);
-            background-size: cover;
-            background-position: center;
-            margin-bottom: 10px;
-        }
-
-        #img-moda {
-            background-image: url(../assets/images/studio_wear.jpg);
-            background-size: cover;
-            background-position: center;
-            margin-bottom: 10px;
-        }
     }
 
     .areas-cards {
