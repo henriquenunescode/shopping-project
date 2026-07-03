@@ -10,7 +10,7 @@ services:
       MYSQL_PASSWORD: admin123
 
     ports:
-      - "3306:3306"
+      - "3307:3306"
 
     volumes:
       - db_data:/var/lib/mysql

@@ -97,13 +97,31 @@ async function route() {
 }
 
 async function loadProducts() {
-  const allProducts = await window.apiRequest("/products")
-  products = allProducts.filter((product) => product.store_fk === STORE_ID)
+  try {
+    const allProducts = await window.apiRequest("/products")
+
+    products = allProducts.filter((product) => {
+      return Number(product.store_fk) === STORE_ID
+    })
+  } catch (error) {
+    console.error("Erro ao carregar produtos:", error)
+    products = []
+    alert(error.message)
+  }
 }
 
 async function loadFuncionarios() {
-  funcionarios = await window.apiRequest("/workers")
-  funcionarios = funcionarios.filter((funcionario) => funcionario.store_fk === STORE_ID)
+  try {
+    const allFuncionarios = await window.apiRequest("/workers")
+
+    funcionarios = allFuncionarios.filter((funcionario) => {
+      return Number(funcionario.store_fk) === STORE_ID
+    })
+  } catch (error) {
+    console.error("Erro ao carregar funcionários:", error)
+    funcionarios = []
+    alert(error.message)
+  }
 }
 
 function renderPageFuncionarios() {
@@ -184,9 +202,9 @@ function divTitleProduct() {
 
   if (!isGerenteAtual()) {
     button.style.display = "none"
+  } else {
+    button.addEventListener("click", renderFormProduct)
   }
-
-  button.addEventListener("click", renderFormProduct)
 
   div.append(h2, button)
 
@@ -257,8 +275,9 @@ function submitFormProduct() {
     const nome = dados.name
     const preco = dados.price
     const estoque = dados.stock
+    const categoria = dados.type
 
-    if (!nome || !preco || !estoque) {
+    if (!nome || !preco || !estoque || !categoria || categoria === "selecionar tipo") {
       alert("Preencha todos os campos corretamente!")
       return
     }
@@ -270,7 +289,8 @@ function submitFormProduct() {
           store_fk: STORE_ID,
           nome,
           preco,
-          estoque
+          estoque,
+          categoria
         })
       })
 
@@ -325,12 +345,15 @@ function getProduct(form) {
   const name = dados.get("name")
   const price = parseFloat(dados.get("price"))
   const stock = parseInt(dados.get("stock"))
+  const type = dados.get("type")
 
-  return { name, price, stock }
+  return { name, price, stock, type }
 }
 
 function renderFuncionarios() {
   const divGrid = document.querySelector(".grid-funcionarios")
+
+  if (!divGrid) return
 
   divGrid.replaceChildren()
 
@@ -342,6 +365,8 @@ function renderFuncionarios() {
 
 function renderProducts() {
   const divGrid = document.querySelector(".grid-products")
+
+  if (!divGrid) return
 
   divGrid.replaceChildren()
 
@@ -396,8 +421,16 @@ function newProduct(product) {
   divProduct.classList.add("product")
 
   const img = document.createElement("img")
-  img.src = "../assets/images/kids.jpg"
+  const categoria = product.categoria || "default"
+  const imageName = categoria.toLowerCase().trim()
+
+  img.src = "../assets/images/" + imageName + ".jpg"
   img.alt = product.nome
+
+  img.onerror = () => {
+    img.onerror = null
+    img.src = "../assets/images/default.jpg"
+  }
 
   const divInfoProduct = createDiv()
   divInfoProduct.classList.add("info-product")
@@ -445,7 +478,7 @@ function newProduct(product) {
     reporEstoque(product)
   })
 
-  if (!window.isGerente()) {
+  if (!isGerenteAtual()) {
     buttonStock.style.display = "none"
   }
 
@@ -568,9 +601,9 @@ function renderCarrinho() {
 
       <div class="price">
         <span>${item.preco.toLocaleString("pt-BR", {
-      style: "currency",
-      currency: "BRL"
-    })}</span>
+          style: "currency",
+          currency: "BRL"
+        })}</span>
       </div>
 
       <div class="quantity">
@@ -712,7 +745,9 @@ async function reporEstoque(product) {
         nome: product.nome,
         preco: Number(product.preco),
         estoque: novoEstoque,
-        store_fk: product.store_fk
+        store_fk: product.store_fk,
+        categoria: product.categoria,
+        descricao: product.descricao
       })
     })
 
